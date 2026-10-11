@@ -389,6 +389,24 @@ h1, h2, h3, h4 {
   transition: all var(--transition-fast);
 }
 
+/* Group headings: only meaningful inside the drawer (vertical list).
+   On the desktop bar they stay hidden so the pill nav remains compact. */
+.nav-group-label {
+  display: none;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  padding: 0.35rem 0.25rem 0.5rem;
+}
+
+.nav-group-label:not(:first-child) {
+  margin-top: 0.9rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
 .mobile-menu-toggle:hover {
   background: rgba(255, 255, 255, 0.15);
   transform: scale(1.05);
@@ -478,7 +496,6 @@ h1, h2, h3, h4 {
   border-radius: var(--radius-pill);
   font-size: 0.88rem;
   color: var(--accent-cyan);
-  margin-bottom: 1.6rem;
 }
 
 .hero-title {
@@ -1073,10 +1090,26 @@ h1, h2, h3, h4 {
   position: relative;
 }
 
-.info-grid {
+/* Three cards always fill the row: no dangling empty cell.
+   auto-fit would leave the third card orphaned on medium widths. */
+.info-grid,
+.stats-grid,
+.cards-3d-grid,
+.profiles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2rem;
+  align-items: stretch;
+}
+
+.cards-3d-grid,
+.profiles-grid {
+  gap: 2.5rem;
+}
+
+.info-card,
+.stat-card {
+  height: 100%;
 }
 
 .info-card {
@@ -1186,12 +1219,6 @@ h1, h2, h3, h4 {
   position: relative;
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-  gap: 2rem;
-}
-
 .stat-card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
@@ -1290,10 +1317,8 @@ h1, h2, h3, h4 {
   position: relative;
 }
 
+/* Column count lives in the shared rule above; only 3D depth is unique here */
 .cards-3d-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2.5rem;
   perspective: 1200px;
 }
 
@@ -1432,12 +1457,7 @@ h1, h2, h3, h4 {
   position: relative;
 }
 
-.profiles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2.5rem;
-}
-
+/* Column count lives in the shared rule above */
 .profile-card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
@@ -1618,10 +1638,12 @@ h1, h2, h3, h4 {
   background: linear-gradient(180deg, transparent 0%, rgba(16, 19, 32, 0.5) 50%, transparent 100%);
 }
 
+/* Four essays: a clean 2x2 block. auto-fit produced 3+1, leaving a hole. */
 .reading-articles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2.2rem;
+  align-items: start;
 }
 
 .reading-article-card {
@@ -2141,10 +2163,15 @@ h1, h2, h3, h4 {
   color: var(--accent-purple);
 }
 
+/* Five short links: flex lets the last row stretch instead of leaving a gap */
 .verified-links-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 1.2rem;
+}
+
+.verified-link-card {
+  flex: 1 1 230px;
 }
 
 .verified-link-card {
@@ -2285,7 +2312,7 @@ h1, h2, h3, h4 {
   backdrop-filter: blur(12px);
   padding: 0.45rem 1.15rem;
   border-radius: var(--radius-pill);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: #c4b5fd;
 }
@@ -2509,8 +2536,58 @@ h1, h2, h3, h4 {
     gap: 1.5rem;
   }
 
+  /* (3-card grids are handled by the 601-1023px and ≤600px blocks
+     further down, so a half-empty row never appears.) */
+
   .reading-articles-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Tablets: two per row, and the odd card spans the full width so the
+   last row is never half empty. Covers 601px to 1023px. */
+@media (min-width: 601px) and (max-width: 1023px) {
+  .info-grid,
+  .stats-grid,
+  .cards-3d-grid,
+  .profiles-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .info-grid > *:last-child,
+  .stats-grid > *:last-child,
+  .cards-3d-grid > *:last-child,
+  .profiles-grid > *:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .cards-3d-grid > *:last-child {
+    height: 340px;
+  }
+}
+
+/* Phones: a single column removes every chance of a half-empty row */
+@media (max-width: 600px) {
+  .info-grid,
+  .stats-grid,
+  .cards-3d-grid,
+  .profiles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .info-grid > *:last-child,
+  .stats-grid > *:last-child,
+  .cards-3d-grid > *:last-child,
+  .profiles-grid > *:last-child {
+    grid-column: auto;
+  }
+
+  .cards-3d-grid > *:last-child {
+    height: 400px;
+  }
+
+  .verified-link-card {
+    flex: 1 1 100%;
   }
 }
 
@@ -2526,7 +2603,6 @@ h1, h2, h3, h4 {
 /* --- Hidden everywhere by default (desktop safety net) --- */
 .app-back-btn,
 .app-view-title,
-.hub-menu,
 .nav-scrim {
   display: none;
 }
@@ -2536,248 +2612,39 @@ h1, h2, h3, h4 {
 }
 
 /* ---------------------------------------------------------------
-   HUB MENU — styled here, only revealed on small screens
+   HUB — intentionally minimal. The only real navigation is the
+   top menu, so the hub stays a calm cover screen.
    --------------------------------------------------------------- */
-.hub-menu {
-  padding: 2.5rem 0 3.5rem;
-  text-align: left;
-}
-
-.hub-menu-head {
-  margin-bottom: 1.75rem;
-}
-
-.hub-menu-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.74rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--accent-cyan);
-  margin-bottom: 0.65rem;
-}
-
-.hub-menu-title {
-  font-size: clamp(1.5rem, 5.6vw, 2rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  margin-bottom: 0.6rem;
-  line-height: 1.15;
-}
-
-.hub-menu-hint {
-  font-size: 0.92rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-}
-
-.hub-menu-hint strong {
-  color: var(--text-soft);
-}
-
-/* Emergency quick-dial strip */
-.hub-crisis-strip {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-  background: rgba(16, 185, 129, 0.09);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  border-radius: var(--radius-md);
-  padding: 0.95rem 1.05rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.88rem;
-  color: var(--text-soft);
-  line-height: 1.6;
-}
-
-.hub-crisis-strip i {
-  color: var(--accent-green);
-  font-size: 1.05rem;
-  margin-top: 0.15rem;
-  flex-shrink: 0;
-}
-
-.hub-crisis-strip strong {
-  display: block;
-  color: #ffffff;
-  margin-bottom: 0.15rem;
-}
-
-.hub-crisis-strip a {
-  color: var(--accent-green);
-  font-weight: 700;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(16, 185, 129, 0.5);
-}
-
-/* Card grid: 1 column on phones, 2 on larger phones/small tablets */
-.hub-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.85rem;
-}
-
-.hub-card {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.15rem 1.25rem;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025));
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-card);
-  text-decoration: none;
-  color: var(--text-primary);
-  overflow: hidden;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.25s ease,
-              box-shadow 0.25s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Colour wash per card */
-.hub-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(120% 120% at 0% 0%, var(--card-glow, rgba(254, 44, 85, 0.18)), transparent 62%);
-  opacity: 0.85;
-  pointer-events: none;
-}
-
-.hub-card:active {
-  transform: scale(0.975);
-}
-
-@media (hover: hover) {
-  .hub-card:hover {
-    transform: translateY(-3px);
-    border-color: var(--card-accent, var(--accent-pink));
-    box-shadow: 0 14px 34px -12px rgba(0, 0, 0, 0.7);
-  }
-}
-
-.hub-card-icon {
-  position: relative;
-  z-index: 1;
-  flex-shrink: 0;
-  width: 46px;
-  height: 46px;
-  border-radius: 15px;
+.hub-support-line {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.05rem;
-  background: var(--card-icon-bg, rgba(254, 44, 85, 0.16));
-  border: 1px solid var(--card-border, rgba(254, 44, 85, 0.32));
-  color: var(--card-accent, var(--accent-pink));
-}
-
-.hub-card-body {
-  position: relative;
-  z-index: 1;
-  min-width: 0;
-}
-
-.hub-card-body strong {
-  display: block;
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  margin-bottom: 0.2rem;
-}
-
-.hub-card-body small {
-  display: block;
-  font-size: 0.82rem;
-  line-height: 1.5;
-  color: var(--text-secondary);
-}
-
-.hub-card-go {
-  position: relative;
-  z-index: 1;
-  margin-left: auto;
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  color: var(--card-accent, var(--accent-pink));
-  background: var(--card-icon-bg, rgba(254, 44, 85, 0.16));
-  transition: transform 0.25s ease;
-}
-
-@media (hover: hover) {
-  .hub-card:hover .hub-card-go {
-    transform: translateX(3px);
-  }
-}
-
-/* Featured cards get a stronger identity and stretch full width */
-.hub-card--feature {
-  background: linear-gradient(135deg, var(--card-glow, rgba(254, 44, 85, 0.22)), rgba(255, 255, 255, 0.03) 70%);
-  border-color: var(--card-border, rgba(254, 44, 85, 0.35));
-}
-
-.hub-card--feature .hub-card-icon {
-  width: 54px;
-  height: 54px;
-  font-size: 1.25rem;
-}
-
-/* Per-card colour themes (set via modifier classes) */
-.hub-card.tone-pink {
-  --card-accent: var(--accent-pink);
-  --card-glow: rgba(254, 44, 85, 0.2);
-  --card-icon-bg: rgba(254, 44, 85, 0.16);
-  --card-border: rgba(254, 44, 85, 0.32);
-}
-.hub-card.tone-cyan {
-  --card-accent: var(--accent-cyan);
-  --card-glow: rgba(37, 244, 238, 0.18);
-  --card-icon-bg: rgba(37, 244, 238, 0.14);
-  --card-border: rgba(37, 244, 238, 0.3);
-}
-.hub-card.tone-purple {
-  --card-accent: var(--accent-purple);
-  --card-glow: rgba(139, 92, 246, 0.2);
-  --card-icon-bg: rgba(139, 92, 246, 0.16);
-  --card-border: rgba(139, 92, 246, 0.32);
-}
-.hub-card.tone-green {
-  --card-accent: var(--accent-green);
-  --card-glow: rgba(16, 185, 129, 0.18);
-  --card-icon-bg: rgba(16, 185, 129, 0.14);
-  --card-border: rgba(16, 185, 129, 0.3);
-}
-.hub-card.tone-amber {
-  --card-accent: var(--accent-amber);
-  --card-glow: rgba(245, 158, 11, 0.18);
-  --card-icon-bg: rgba(245, 158, 11, 0.14);
-  --card-border: rgba(245, 158, 11, 0.3);
-}
-
-.hub-footnote {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 2rem;
-  font-size: 0.82rem;
-  color: var(--text-secondary);
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding: 1.25rem 1.5rem 3rem;
   text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
 }
 
-.hub-footnote i {
-  color: var(--accent-pink);
+.hub-support-line i {
+  color: var(--accent-green);
+}
+
+.hub-support-line p {
+  display: inline;
+}
+
+.hub-support-line a {
+  color: var(--accent-green);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.45);
+}
+
+.hub-support-sep {
+  color: var(--text-muted);
+  padding: 0 0.15rem;
 }
 
 /* Back button & view title in the header */
@@ -2870,8 +2737,7 @@ body.nav-open .nav-scrim {
     overscroll-behavior-y: contain;
   }
 
-  /* Reveal the hub menu, the back button and the view title */
-  body.app-mode .hub-menu,
+  /* Reveal the back button and the view title */
   body.app-mode.app-in-view .app-back-btn,
   body.app-mode.app-in-view .app-view-title {
     display: block;
@@ -2895,20 +2761,9 @@ body.nav-open .nav-scrim {
     display: none;
   }
 
-  /* The hub grid gets two columns once there is room */
-  @media (min-width: 560px) {
-    .hub-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .hub-card--feature {
-      grid-column: span 2;
-    }
-  }
-
   /* Tighter vertical rhythm on small screens */
   body.app-mode .app-hub .hero-section {
-    padding: 2.2rem 0 1rem;
+    padding: 2.6rem 0 1.2rem;
     text-align: left;
   }
 
@@ -2924,24 +2779,15 @@ body.nav-open .nav-scrim {
   }
 
   body.app-mode .app-hub .hero-quote-card {
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
     padding: 1rem 1.2rem;
     font-size: 0.9rem;
-  }
-
-  body.app-mode .app-hub .hero-actions {
-    margin-bottom: 1.75rem;
-  }
-
-  body.app-mode .app-hub .hero-actions .btn {
-    flex: 1 1 auto;
-    justify-content: center;
-    min-height: 48px;
   }
 
   body.app-mode .app-hub .hero-badges-row {
     justify-content: flex-start;
     gap: 0.6rem;
+    margin-bottom: 1.25rem;
   }
 
   /* The footer travels with the hub, never with an inner section.
@@ -3052,6 +2898,11 @@ body.nav-open .nav-scrim {
     border-color: rgba(255, 255, 255, 0.16);
   }
 
+  /* Group headings become visible inside the drawer */
+  body.app-mode .nav-group-label {
+    display: block;
+  }
+
   body.app-mode .nav-btn,
   body.app-mode .nav-unne {
     justify-content: flex-start;
@@ -3074,30 +2925,6 @@ body.nav-open .nav-scrim {
    SMALL PHONE TWEAKS (≤400px)
    --------------------------------------------------------------- */
 @media (max-width: 400px) {
-  .hub-card {
-    padding: 1rem;
-    gap: 0.85rem;
-  }
-
-  .hub-card-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 13px;
-    font-size: 0.95rem;
-  }
-
-  .hub-card-body strong {
-    font-size: 0.95rem;
-  }
-
-  .hub-card-body small {
-    font-size: 0.78rem;
-  }
-
-  .hub-card-go {
-    display: none;
-  }
-
   .app-back-label {
     display: none;
   }
@@ -3114,7 +2941,6 @@ body.nav-open .nav-scrim {
   }
 
   .nav-list,
-  .hub-card,
   .nav-scrim {
     transition: none;
   }

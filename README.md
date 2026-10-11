@@ -74,19 +74,27 @@ Unchanged from the original design: a single continuous page where the header
 navigation scrolls you through every section.
 
 ### 📲 Phone & Tablet (1023px and below)
-A dedicated **hub** experience that removes the endless scroll:
+A focused, **minimalist** experience that removes the endless scroll:
 
-- **Hub screen (initial view):** the hero plus a card grid with one card per
-  section (Simulator, Psychology, Evidence, Myths, Profiles, Reading Lounge,
-  Survey, Support and the UNNE cohort).
-- **One section at a time:** choosing a card opens that section inside a fixed
-  app shell. The other sections are hidden, so there is no endless scrolling.
-- **App bar:** the header becomes a compact bar showing the current section
-  title, a **back button** to the hub, and a drawer with the full section list.
-- **Quick crisis access:** the hub keeps a tappable strip with the free 24/7
-  lines (102 Chaco / 135 Argentina) always one tap away.
+- **Hub screen (initial view):** a calm cover — hero, the campaign badges and a
+  single discreet line with the free 24/7 helplines (102 / 135).
+- **One section at a time:** picking a destination from the menu opens that
+  section inside a fixed app shell. The others are hidden, so there is no
+  endless scrolling and no duplicated navigation.
+- **Single navigation:** the only menu is the **three-bar button** in the app
+  bar. It opens a grouped drawer:
+  - *Experience* — Simulator, Myths 3D, Profiles
+  - *Understand* — Evidence, Psychology
+  - *Resources* — Reading Lounge, Survey, UNNE Cohort, Support
+- **App bar:** shows the current section title and a **back button** to the hub.
 - **URL aware:** opening `index.html#survey` (or any section) lands directly on
   that section, and the browser / Android back button returns to the hub.
+
+**Card grids never leave a gap.** Rows of three (Psychology, Evidence, Myths,
+Profiles) use three columns on desktop and, on tablets, two columns with the
+last card spanning the full width. The four essays sit in a 2×2 block and the
+five verified links stretch to fill their last row. Below 600px everything
+collapses to a single column.
 
 **Technical notes**
 
