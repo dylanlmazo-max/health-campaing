@@ -11,6 +11,7 @@
  * 6. The Reading Lounge (Expandable deep-dive educational articles)
  * 7. Anonymous Community Survey (Firebase Firestore v10 modular + LocalStorage resilience)
  * 8. Responsive navigation & custom toast notifications
+ * 9. Responsive App Shell: a hub screen plus an internal menu on phone & tablet
  */
 
 // ===============================================================
@@ -447,33 +448,243 @@ function initSurvey() {
 }
 
 // ===============================================================
-// 7. RESPONSIVE NAVIGATION & CUSTOM TOAST
+// 7. NAVIGATION: DESKTOP LINKS / MOBILE DRAWER / CUSTOM TOAST
 // ===============================================================
+function closeDrawer() {
+  const menuBtn = document.getElementById("mobileMenuBtn");
+  const navList = document.querySelector(".nav-list");
+  const scrim = document.getElementById("navScrim");
+
+  if (navList) navList.classList.remove("active");
+  if (scrim) scrim.hidden = true;
+  document.body.classList.remove("nav-open");
+  if (menuBtn) {
+    menuBtn.setAttribute("aria-expanded", "false");
+    const icon = menuBtn.querySelector("i");
+    if (icon) {
+      icon.classList.add("fa-bars");
+      icon.classList.remove("fa-xmark");
+    }
+  }
+}
+
 function initNavigation() {
   const menuBtn = document.getElementById("mobileMenuBtn");
   const navList = document.querySelector(".nav-list");
+  const scrim = document.getElementById("navScrim");
 
   if (menuBtn && navList) {
     menuBtn.addEventListener("click", () => {
-      navList.classList.toggle("active");
+      const willOpen = !navList.classList.contains("active");
+      navList.classList.toggle("active", willOpen);
+      if (scrim) scrim.hidden = !willOpen;
+      document.body.classList.toggle("nav-open", willOpen);
+      menuBtn.setAttribute("aria-expanded", String(willOpen));
       const icon = menuBtn.querySelector("i");
       if (icon) {
-        icon.classList.toggle("fa-bars");
-        icon.classList.toggle("fa-xmark");
+        icon.classList.toggle("fa-bars", !willOpen);
+        icon.classList.toggle("fa-xmark", willOpen);
       }
     });
 
     navList.querySelectorAll("a").forEach(link => {
-      link.addEventListener("click", () => {
-        navList.classList.remove("active");
-        const icon = menuBtn.querySelector("i");
-        if (icon) {
-          icon.classList.add("fa-bars");
-          icon.classList.remove("fa-xmark");
-        }
-      });
+      link.addEventListener("click", () => closeDrawer());
+    });
+
+    // Tapping the dim layer closes the drawer
+    if (scrim) scrim.addEventListener("click", closeDrawer);
+
+    // Escape closes the drawer on every device
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && navList.classList.contains("active")) {
+        closeDrawer();
+        menuBtn.focus();
+      }
     });
   }
+}
+
+// ===============================================================
+// 8. RESPONSIVE APP SHELL (HUB + INTERNAL MENU)
+// -----------------------------------------------------------------
+// Desktop (1024px and wider): nothing changes, the page keeps its
+// continuous scroll. Phone & tablet: a hub screen welcomes the visitor
+// and every other section opens one at a time inside the same shell,
+// which removes the endless scrolling.
+// ===============================================================
+const APP_MODE_QUERY = window.matchMedia("(max-width: 1023px)");
+
+const appViews = {
+  simulator: { selector: "#simulator", title: "TikTok Simulator", icon: '<i class="fa-brands fa-tiktok"></i>' },
+  psychology: { selector: "#psychology", title: "Digital Psychology", icon: '<i class="fa-solid fa-brain"></i>' },
+  evidence: { selector: "#evidence", title: "The Evidence", icon: '<i class="fa-solid fa-chart-simple"></i>' },
+  myths: { selector: "#myths", title: "Myths vs. Realities", icon: '<i class="fa-solid fa-rotate"></i>' },
+  profiles: { selector: "#profiles", title: "Behind the Smile", icon: '<i class="fa-solid fa-mask"></i>' },
+  "reading-lounge": { selector: "#reading-lounge", title: "The Reading Lounge", icon: '<i class="fa-solid fa-book-open"></i>' },
+  survey: { selector: "#survey", title: "Community Survey", icon: '<i class="fa-solid fa-clipboard-check"></i>' },
+  support: { selector: "#support", title: "Support & Hotlines", icon: '<i class="fa-solid fa-hand-holding-heart"></i>' },
+  "about-us": { selector: "#about-us", title: "Our Movement (UNNE)", icon: '<i class="fa-solid fa-graduation-cap"></i>' }
+};
+
+function isAppMode() {
+  return APP_MODE_QUERY.matches;
+}
+
+function syncHeaderHeight() {
+  const header = document.querySelector(".site-header");
+  if (!header || !isAppMode()) return;
+  const height = Math.round(header.getBoundingClientRect().height);
+  if (height > 0) {
+    document.documentElement.style.setProperty("--app-header-h", `${height}px`);
+  }
+}
+
+/** Show a single section (or the hub when viewKey is null) */
+function showAppView(viewKey, options = {}) {
+  if (!isAppMode()) return;
+
+  const { updateHash = true } = options;
+  const shell = document.getElementById("appShell");
+  const hub = document.getElementById("hub");
+  const titleEl = document.getElementById("appViewTitle");
+  const footer = document.querySelector(".app-shell > footer");
+  const navLinks = document.querySelectorAll(".nav-list .nav-link");
+
+  if (!shell || !hub) return;
+
+  document.querySelectorAll(".app-shell > main > section").forEach(section => {
+    section.classList.remove("app-view-active");
+  });
+
+  if (viewKey && appViews[viewKey]) {
+    const view = appViews[viewKey];
+    const target = document.querySelector(view.selector);
+    if (!target) return;
+
+    target.classList.add("app-view-active");
+    hub.classList.add("app-view-hidden");
+    document.body.classList.add("app-in-view");
+
+    if (titleEl) titleEl.textContent = view.title;
+    if (footer) footer.classList.remove("app-footer-visible");
+
+    navLinks.forEach(link => {
+      link.classList.toggle("active", link.getAttribute("href") === `#${viewKey}`);
+    });
+
+    if (updateHash && window.location.hash !== `#${viewKey}`) {
+      history.pushState({ view: viewKey }, "", `#${viewKey}`);
+    }
+  } else {
+    // Back to the hub
+    hub.classList.remove("app-view-hidden");
+    document.body.classList.remove("app-in-view");
+
+    if (titleEl) titleEl.textContent = "Hub";
+    if (footer) footer.classList.add("app-footer-visible");
+
+    navLinks.forEach(link => link.classList.remove("active"));
+
+    if (updateHash && window.location.hash !== "#hub") {
+      history.pushState({ view: "hub" }, "", "#hub");
+    }
+  }
+
+  syncHeaderHeight();
+  shell.scrollTop = 0;
+}
+
+/** Keep the header height in sync while the shell scrolls */
+function initAppScrollBehaviour() {
+  const shell = document.getElementById("appShell");
+  if (!shell) return;
+  shell.addEventListener("scroll", () => {
+    syncHeaderHeight();
+  }, { passive: true });
+}
+
+function initAppShell() {
+  const hub = document.getElementById("hub");
+  const backBtn = document.getElementById("appBackBtn");
+  const brandLogo = document.getElementById("brandLogo");
+  const shell = document.getElementById("appShell");
+
+  if (!hub || !shell) return;
+
+  // Every internal link becomes a view switch while in app mode
+  document.addEventListener("click", (e) => {
+    if (!isAppMode()) return;
+
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+
+    const targetId = link.getAttribute("href").slice(1);
+    if (!targetId) return;
+
+    const isHubTarget = targetId === "hero" || targetId === "hub";
+    const isViewTarget = !!appViews[targetId];
+
+    if (isHubTarget || isViewTarget) {
+      // In the app shell we swap screens, so the browser must not
+      // perform its default in-page jump.
+      e.preventDefault();
+      showAppView(isViewTarget ? targetId : null);
+    }
+  });
+
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      showAppView(null);
+    });
+  }
+
+  if (brandLogo) {
+    brandLogo.addEventListener("click", (e) => {
+      if (!isAppMode()) return;
+      e.preventDefault();
+      showAppView(null);
+    });
+  }
+
+  // Browser / Android back button
+  window.addEventListener("popstate", () => {
+    if (!isAppMode()) return;
+    const hash = window.location.hash.slice(1);
+    showAppView(appViews[hash] ? hash : null, { updateHash: false });
+  });
+
+  // React to rotation, resizing and orientation changes
+  const handleModeChange = () => {
+    document.body.classList.toggle("app-mode", isAppMode());
+
+    if (isAppMode()) {
+      closeDrawer();
+      const hash = window.location.hash.slice(1);
+      showAppView(appViews[hash] ? hash : null, { updateHash: false });
+      syncHeaderHeight();
+    } else {
+      // Back on desktop: restore the classic continuous page
+      document.body.classList.remove("app-in-view", "app-mode");
+      document.querySelectorAll(".app-shell > main > section").forEach(s => s.classList.remove("app-view-active"));
+      hub.classList.remove("app-view-hidden");
+      const footer = document.querySelector(".app-shell > footer");
+      if (footer) footer.classList.remove("app-footer-visible");
+    }
+  };
+
+  if (typeof APP_MODE_QUERY.addEventListener === "function") {
+    APP_MODE_QUERY.addEventListener("change", handleModeChange);
+  } else if (typeof APP_MODE_QUERY.addListener === "function") {
+    APP_MODE_QUERY.addListener(handleModeChange);
+  }
+
+  window.addEventListener("resize", syncHeaderHeight, { passive: true });
+  window.addEventListener("orientationchange", () => {
+    setTimeout(syncHeaderHeight, 120);
+  });
+
+  initAppScrollBehaviour();
+  handleModeChange();
 }
 
 function showToast(message) {
@@ -521,6 +732,7 @@ function startApplication() {
   initReadingLounge();
   initSurvey();
   initNavigation();
+  initAppShell();
 }
 
 if (document.readyState === "loading") {

@@ -2513,3 +2513,609 @@ h1, h2, h3, h4 {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===============================================================
+   8. APP SHELL / HUB — DIFFERENT LAYOUT FOR PHONE & TABLET
+   ----------------------------------------------------------------
+   Desktop (≥1024px) is untouched: the wrapper is `display: contents`,
+   the hub menu is hidden and every section keeps scrolling as before.
+   On smaller screens the same sections become one screen at a time
+   (a "hub" plus an internal menu), so the endless scroll disappears.
+   =============================================================== */
+
+/* --- Hidden everywhere by default (desktop safety net) --- */
+.app-back-btn,
+.app-view-title,
+.hub-menu,
+.nav-scrim {
+  display: none;
+}
+
+.app-shell {
+  display: contents;
+}
+
+/* ---------------------------------------------------------------
+   HUB MENU — styled here, only revealed on small screens
+   --------------------------------------------------------------- */
+.hub-menu {
+  padding: 2.5rem 0 3.5rem;
+  text-align: left;
+}
+
+.hub-menu-head {
+  margin-bottom: 1.75rem;
+}
+
+.hub-menu-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent-cyan);
+  margin-bottom: 0.65rem;
+}
+
+.hub-menu-title {
+  font-size: clamp(1.5rem, 5.6vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.6rem;
+  line-height: 1.15;
+}
+
+.hub-menu-hint {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.hub-menu-hint strong {
+  color: var(--text-soft);
+}
+
+/* Emergency quick-dial strip */
+.hub-crisis-strip {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  background: rgba(16, 185, 129, 0.09);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-md);
+  padding: 0.95rem 1.05rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.88rem;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.hub-crisis-strip i {
+  color: var(--accent-green);
+  font-size: 1.05rem;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.hub-crisis-strip strong {
+  display: block;
+  color: #ffffff;
+  margin-bottom: 0.15rem;
+}
+
+.hub-crisis-strip a {
+  color: var(--accent-green);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.5);
+}
+
+/* Card grid: 1 column on phones, 2 on larger phones/small tablets */
+.hub-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+}
+
+.hub-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.15rem 1.25rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025));
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  color: var(--text-primary);
+  overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Colour wash per card */
+.hub-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 120% at 0% 0%, var(--card-glow, rgba(254, 44, 85, 0.18)), transparent 62%);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.hub-card:active {
+  transform: scale(0.975);
+}
+
+@media (hover: hover) {
+  .hub-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--card-accent, var(--accent-pink));
+    box-shadow: 0 14px 34px -12px rgba(0, 0, 0, 0.7);
+  }
+}
+
+.hub-card-icon {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  background: var(--card-icon-bg, rgba(254, 44, 85, 0.16));
+  border: 1px solid var(--card-border, rgba(254, 44, 85, 0.32));
+  color: var(--card-accent, var(--accent-pink));
+}
+
+.hub-card-body {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.hub-card-body strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin-bottom: 0.2rem;
+}
+
+.hub-card-body small {
+  display: block;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.hub-card-go {
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: var(--card-accent, var(--accent-pink));
+  background: var(--card-icon-bg, rgba(254, 44, 85, 0.16));
+  transition: transform 0.25s ease;
+}
+
+@media (hover: hover) {
+  .hub-card:hover .hub-card-go {
+    transform: translateX(3px);
+  }
+}
+
+/* Featured cards get a stronger identity and stretch full width */
+.hub-card--feature {
+  background: linear-gradient(135deg, var(--card-glow, rgba(254, 44, 85, 0.22)), rgba(255, 255, 255, 0.03) 70%);
+  border-color: var(--card-border, rgba(254, 44, 85, 0.35));
+}
+
+.hub-card--feature .hub-card-icon {
+  width: 54px;
+  height: 54px;
+  font-size: 1.25rem;
+}
+
+/* Per-card colour themes (set via modifier classes) */
+.hub-card.tone-pink {
+  --card-accent: var(--accent-pink);
+  --card-glow: rgba(254, 44, 85, 0.2);
+  --card-icon-bg: rgba(254, 44, 85, 0.16);
+  --card-border: rgba(254, 44, 85, 0.32);
+}
+.hub-card.tone-cyan {
+  --card-accent: var(--accent-cyan);
+  --card-glow: rgba(37, 244, 238, 0.18);
+  --card-icon-bg: rgba(37, 244, 238, 0.14);
+  --card-border: rgba(37, 244, 238, 0.3);
+}
+.hub-card.tone-purple {
+  --card-accent: var(--accent-purple);
+  --card-glow: rgba(139, 92, 246, 0.2);
+  --card-icon-bg: rgba(139, 92, 246, 0.16);
+  --card-border: rgba(139, 92, 246, 0.32);
+}
+.hub-card.tone-green {
+  --card-accent: var(--accent-green);
+  --card-glow: rgba(16, 185, 129, 0.18);
+  --card-icon-bg: rgba(16, 185, 129, 0.14);
+  --card-border: rgba(16, 185, 129, 0.3);
+}
+.hub-card.tone-amber {
+  --card-accent: var(--accent-amber);
+  --card-glow: rgba(245, 158, 11, 0.18);
+  --card-icon-bg: rgba(245, 158, 11, 0.14);
+  --card-border: rgba(245, 158, 11, 0.3);
+}
+
+.hub-footnote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.hub-footnote i {
+  color: var(--accent-pink);
+}
+
+/* Back button & view title in the header */
+.app-back-btn {
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-back-btn i {
+  font-size: 0.7rem;
+}
+
+.app-back-btn:active {
+  transform: scale(0.95);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.app-view-title {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  padding-right: 0.5rem;
+}
+
+/* Drawer dim layer */
+.nav-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 5, 12, 0.68);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1500;
+}
+
+.nav-scrim[hidden] {
+  display: none;
+}
+
+body.nav-open .nav-scrim {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---------------------------------------------------------------
+   PHONE & TABLET — one screen at a time
+   --------------------------------------------------------------- */
+@media (max-width: 1023px) {
+  /* Every rule below is scoped to body.app-mode, which script.js adds on
+     phone/tablet screens. Without JS the classic page still works. */
+
+  /* The body stops scrolling; the shell below scrolls instead */
+  body.app-mode {
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  body.app-mode .app-shell {
+    display: block;
+    position: fixed;
+    inset: 0;
+    padding-top: var(--app-header-h, 60px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+
+  /* Reveal the hub menu, the back button and the view title */
+  body.app-mode .hub-menu,
+  body.app-mode.app-in-view .app-back-btn,
+  body.app-mode.app-in-view .app-view-title {
+    display: block;
+  }
+
+  body.app-mode.app-in-view .app-back-btn {
+    display: inline-flex;
+  }
+
+  /* Only one screen at a time */
+  body.app-mode .app-shell > main > section {
+    display: none;
+    animation: appViewIn 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  body.app-mode .app-shell > main > section.app-view-active {
+    display: block;
+  }
+
+  body.app-mode .app-hub.app-view-hidden {
+    display: none;
+  }
+
+  /* The hub grid gets two columns once there is room */
+  @media (min-width: 560px) {
+    .hub-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hub-card--feature {
+      grid-column: span 2;
+    }
+  }
+
+  /* Tighter vertical rhythm on small screens */
+  body.app-mode .app-hub .hero-section {
+    padding: 2.2rem 0 1rem;
+    text-align: left;
+  }
+
+  body.app-mode .app-hub .hero-title {
+    font-size: clamp(2.1rem, 8.5vw, 3rem);
+    margin-bottom: 1rem;
+  }
+
+  body.app-mode .app-hub .hero-subtitle {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1.6rem;
+  }
+
+  body.app-mode .app-hub .hero-quote-card {
+    margin-bottom: 1.75rem;
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  body.app-mode .app-hub .hero-actions {
+    margin-bottom: 1.75rem;
+  }
+
+  body.app-mode .app-hub .hero-actions .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-height: 48px;
+  }
+
+  body.app-mode .app-hub .hero-badges-row {
+    justify-content: flex-start;
+    gap: 0.6rem;
+  }
+
+  /* The footer travels with the hub, never with an inner section.
+     script.js adds .app-footer-visible when the hub is the active screen. */
+  body.app-mode .app-shell > footer {
+    display: none;
+  }
+
+  body.app-mode .app-shell > footer.app-footer-visible {
+    display: block;
+  }
+
+  /* Comfortable touch targets for the drawer on tablets too */
+  body.app-mode .mobile-menu-toggle {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  body.app-mode .main-nav {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    /* Must be off: a backdrop-filter here would become the drawer's
+       containing block and misplace it over the app bar. */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* Header becomes a compact, pinned app bar (above the drawer) */
+  body.app-mode .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1700;
+    padding: 0.5rem 0;
+  }
+
+  body.app-mode .header-container {
+    gap: 0.7rem;
+    /* Neutralised so the drawer anchors to the app bar itself,
+       which is the containing block created by its backdrop-filter. */
+    position: static;
+  }
+
+  body.app-mode .brand-logo {
+    font-size: 1.05rem;
+    gap: 0.55rem;
+  }
+
+  body.app-mode .logo-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+  }
+
+  /* Drawer: full-height panel sliding from the right.
+     NOTE: the app bar uses backdrop-filter, which makes it the containing
+     block for fixed descendants, so the drawer is positioned absolutely
+     against the header instead (top: 100% = just below the bar). */
+  body.app-mode .nav-list {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: auto;
+    width: min(82vw, 330px);
+    height: calc(100vh - var(--app-header-h, 60px));
+    height: calc(100dvh - var(--app-header-h, 60px));
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+    padding: 1.25rem 1.25rem calc(2rem + env(safe-area-inset-bottom, 0px));
+    background: rgba(10, 12, 22, 0.97);
+    backdrop-filter: blur(26px) saturate(180%);
+    -webkit-backdrop-filter: blur(26px) saturate(180%);
+    border-left: 1px solid var(--border-subtle);
+    border-bottom: none;
+    overflow-y: auto;
+    z-index: 1600;
+    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.6);
+    display: flex;
+    visibility: hidden;
+    transform: translateX(100%);
+    transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.38s;
+  }
+
+  body.app-mode .nav-list.active {
+    visibility: visible;
+    transform: translateX(0);
+  }
+
+  body.app-mode .nav-link {
+    font-size: 0.95rem;
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius-md);
+    justify-content: flex-start;
+    border: 1px solid transparent;
+  }
+
+  body.app-mode .nav-link i {
+    font-size: 0.95rem;
+    width: 1.25rem;
+  }
+
+  body.app-mode .nav-link.active {
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+
+  body.app-mode .nav-btn,
+  body.app-mode .nav-unne {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
+
+@keyframes appViewIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------------------------------------------------------------
+   SMALL PHONE TWEAKS (≤400px)
+   --------------------------------------------------------------- */
+@media (max-width: 400px) {
+  .hub-card {
+    padding: 1rem;
+    gap: 0.85rem;
+  }
+
+  .hub-card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    font-size: 0.95rem;
+  }
+
+  .hub-card-body strong {
+    font-size: 0.95rem;
+  }
+
+  .hub-card-body small {
+    font-size: 0.78rem;
+  }
+
+  .hub-card-go {
+    display: none;
+  }
+
+  .app-back-label {
+    display: none;
+  }
+
+  .app-back-btn {
+    padding: 0.5rem 0.7rem;
+  }
+}
+
+/* Accessibility: respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .app-shell > main > section {
+    animation: none;
+  }
+
+  .nav-list,
+  .hub-card,
+  .nav-scrim {
+    transition: none;
+  }
+}

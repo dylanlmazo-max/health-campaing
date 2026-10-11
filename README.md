@@ -65,13 +65,48 @@
 
 ---
 
+## 📱 Responsive Experience: Two Distinct Layouts
+
+The site adapts its **structure** (not only its styling) depending on the device.
+
+### 🖥️ Desktop (1024px and wider)
+Unchanged from the original design: a single continuous page where the header
+navigation scrolls you through every section.
+
+### 📲 Phone & Tablet (1023px and below)
+A dedicated **hub** experience that removes the endless scroll:
+
+- **Hub screen (initial view):** the hero plus a card grid with one card per
+  section (Simulator, Psychology, Evidence, Myths, Profiles, Reading Lounge,
+  Survey, Support and the UNNE cohort).
+- **One section at a time:** choosing a card opens that section inside a fixed
+  app shell. The other sections are hidden, so there is no endless scrolling.
+- **App bar:** the header becomes a compact bar showing the current section
+  title, a **back button** to the hub, and a drawer with the full section list.
+- **Quick crisis access:** the hub keeps a tappable strip with the free 24/7
+  lines (102 Chaco / 135 Argentina) always one tap away.
+- **URL aware:** opening `index.html#survey` (or any section) lands directly on
+  that section, and the browser / Android back button returns to the hub.
+
+**Technical notes**
+
+- The switch is driven by `matchMedia("(max-width: 1023px)")` and the
+  `body.app-mode` class, so a rotation or a window resize swaps layouts live and
+  restores the classic desktop page automatically.
+- `.app-shell` uses `display: contents` on desktop, which makes the wrapper
+  completely invisible and leaves the original markup semantics untouched.
+- All app-mode rules live inside a single `@media (max-width: 1023px)` block and
+  are scoped to `body.app-mode`, so the page still works without JavaScript.
+
+---
+
 ## 📂 Project Structure
 
 ```
 detras-de-la-pantalla/
 ├── index.html       # Semantic HTML5 in British English (B2)
-├── styles.css       # Dark mode, Glassmorphism, 3D cards, responsive layout
-├── script.js        # Core logic, simulator toggle, 3D flip, counters, reading lounge
+├── styles.css       # Dark mode, Glassmorphism, 3D cards, responsive layout + hub
+├── script.js        # Core logic, simulator toggle, 3D flip, counters, app shell
 ├── assets/          # Local media (tiktok_filtro.jpg, tiktok_ladob.jpg)
 └── README.md        # Documentation and deployment instructions
 ```
