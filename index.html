@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Have already I? | Digital Well-being & Social Media Awareness (UNNE)</title>
+  <meta name="description" content="An empathetic, interactive exploration of social media's impact on mental well-being, dismantling digital perfectionism and encouraging mindful connection.">
+  <meta name="theme-color" content="#0a0b12">
+
+  <!-- Favicon SVG -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6.5 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-mode">
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow glow-2" aria-hidden="true"></div>
+
+  <!-- SITE HEADER / NAVIGATION -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="#hero" class="brand-logo">
+        <span class="logo-icon"><i class="fa-solid fa-brain"></i></span>
+        <span class="logo-text">Have already <strong>I?</strong></span>
+      </a>
+      <nav class="main-nav" id="mainNav" aria-label="Main Navigation">
+        <ul class="nav-list" id="navList">
+          <li><a href="#simulator" class="nav-link"><i class="fa-brands fa-tiktok"></i> Simulator</a></li>
+          <li><a href="#psychology" class="nav-link"><i class="fa-solid fa-brain"></i> Psychology</a></li>
+          <li><a href="#evidence" class="nav-link"><i class="fa-solid fa-chart-simple"></i> Evidence</a></li>
+          <li><a href="#myths" class="nav-link"><i class="fa-solid fa-rotate"></i> Myths 3D</a></li>
+          <li><a href="#profiles" class="nav-link"><i class="fa-solid fa-mask"></i> Profiles</a></li>
+          <li><a href="#reading-lounge" class="nav-link"><i class="fa-solid fa-book-open"></i> Reading Lounge</a></li>
+          <li><a href="#survey" class="nav-link nav-btn"><i class="fa-solid fa-clipboard-check"></i> Survey</a></li>
+          <li><a href="#about-us" class="nav-link nav-unne"><i class="fa-solid fa-graduation-cap"></i> UNNE Cohort</a></li>
+          <li><a href="#support" class="nav-link"><i class="fa-solid fa-hand-holding-heart"></i> Support</a></li>
+        </ul>
+      </nav>
+      <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Open navigation menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===============================================================
+         A. HERO / REFINED EMOTIONAL COVER
+         =============================================================== -->
+    <section class="hero-section" id="hero">
+      <div class="container hero-container">
+        <div class="hero-badges-row">
+          <div class="hero-badge">
+            <i class="fa-solid fa-feather"></i> A Gentle Space for Digital Reflection
+          </div>
+          <div class="unne-cohort-badge">
+            <i class="fa-solid fa-graduation-cap"></i> 4th-Year English Students • UNNE Languages Dept
+          </div>
+        </div>
+        <h1 class="hero-title">
+          Have already <span class="gradient-text">I?</span>
+        </h1>
+        <p class="hero-subtitle">
+          We often compare our ordinary behind-the-scenes moments with everyone else’s polished highlights. Social media displays what people choose to share, not what they quietly carry. Understanding this distinction is the first step towards reclaiming your peace of mind.
+        </p>
+
+        <div class="hero-quote-card">
+          <p>"A quiet reminder: You are never falling behind simply because your daily life does not look like someone else’s highlight reel."</p>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#simulator" class="btn btn-primary btn-glow">
+            <i class="fa-solid fa-play"></i> Explore TikTok Simulator
+          </a>
+          <a href="#reading-lounge" class="btn btn-secondary">
+            <i class="fa-solid fa-book-open-reader"></i> The Reading Lounge
+          </a>
+        </div>
+
+        <div class="hero-social-proof">
+          <span class="pulse-dot"></span>
+          <p>Over <strong>4,200 young people</strong> have paused to reflect on their relationship with the feed this week.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         B. INTERACTIVE TIKTOK SIMULATOR (9:16 VERTICAL FORMAT)
+         =============================================================== -->
+    <section class="simulator-section" id="simulator">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag"><i class="fa-brands fa-tiktok"></i> INTERACTIVE EXPERIENCE</span>
+          <h2 class="section-title">The Filter vs. <span class="text-accent">The Human Side</span></h2>
+          <p class="section-description">
+            Interact with the vertical smartphone frame. Press the floating <strong>"Reveal the Reality"</strong> button to see what lies behind the curated algorithm.
+          </p>
+        </div>
+
+        <div class="simulator-wrapper">
+          <!-- Smartphone Mockup Frame (9:16) -->
+          <div class="phone-mockup" id="phoneContainer">
+            <div class="phone-speaker" aria-hidden="true"></div>
+            <div class="phone-camera" aria-hidden="true"></div>
+
+            <!-- TikTok Screen Container -->
+            <div class="tiktok-screen" id="tiktokScreen">
+              <!-- Background Media Layer -->
+              <div class="tiktok-media-layer" id="mediaLayer">
+                <img 
+                  id="simulatorMediaImg" 
+                  src="assets/tiktok_filtro.jpg" 
+                  onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=720&q=80'"
+                  alt="TikTok Post: Curated Filter Version"
+                  class="tiktok-media-image active-mode"
+                />
+                <div class="glitch-overlay" id="glitchOverlay" aria-hidden="true"></div>
+              </div>
+
+              <!-- Top Bar Overlay -->
+              <div class="tiktok-top-bar">
+                <div class="screen-clock" id="screenClock">05:00 AM</div>
+                <div class="mode-badge-pill" id="modeBadge">
+                  <span class="badge-dot filter-dot"></span>
+                  <span id="modeBadgeText">✨ Curated Filter</span>
+                </div>
+                <div class="battery-icon"><i class="fa-solid fa-battery-full"></i></div>
+              </div>
+
+              <!-- Floating "Reveal the Reality" Button -->
+              <div class="lado-b-toggle-container">
+                <button 
+                  type="button"
+                  class="btn-toggle-lado-b" 
+                  id="btnToggleLadoB" 
+                  title="Switch between the filtered post and the authentic behind-the-scenes"
+                >
+                  <span class="toggle-icon-wrap" id="toggleIcon">
+                    <i class="fa-solid fa-masks-theater"></i>
+                  </span>
+                  <span class="toggle-label" id="toggleLabel">Reveal the Reality</span>
+                  <span class="pulse-ring"></span>
+                </button>
+              </div>
+
+              <!-- Right Vertical Sidebar Actions -->
+              <aside class="tiktok-actions-sidebar">
+                <!-- Creator Avatar -->
+                <div class="action-btn creator-avatar-btn">
+                  <img 
+                    id="authorAvatar" 
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" 
+                    alt="Creator profile picture"
+                  />
+                  <span class="follow-badge-plus" id="followBadge"><i class="fa-solid fa-plus"></i></span>
+                </div>
+
+                <!-- Heart Like Button -->
+                <button type="button" class="action-btn heart-btn" id="likeBtn" aria-label="Like post">
+                  <div class="icon-circle">
+                    <i class="fa-solid fa-heart" id="heartIcon"></i>
+                  </div>
+                  <span class="action-counter" id="likeCounter">248.5K</span>
+                </button>
+
+                <!-- Comments Button -->
+                <button type="button" class="action-btn" id="commentBtn" aria-label="View comments">
+                  <div class="icon-circle">
+                    <i class="fa-solid fa-comment-dots"></i>
+                  </div>
+                  <span class="action-counter" id="commentCounter">3,812</span>
+                </button>
+
+                <!-- Bookmark Button -->
+                <button type="button" class="action-btn" aria-label="Save post">
+                  <div class="icon-circle">
+                    <i class="fa-solid fa-bookmark"></i>
+                  </div>
+                  <span class="action-counter">42.1K</span>
+                </button>
+
+                <!-- Share Button -->
+                <button type="button" class="action-btn" id="shareBtn" aria-label="Share post">
+                  <div class="icon-circle">
+                    <i class="fa-solid fa-share"></i>
+                  </div>
+                  <span class="action-counter">18.4K</span>
+                </button>
+
+                <!-- Rotating Vinyl Record -->
+                <div class="vinyl-record" aria-hidden="true">
+                  <div class="vinyl-disc rotating" id="vinylDisc">
+                    <i class="fa-solid fa-music"></i>
+                  </div>
+                </div>
+              </aside>
+
+              <!-- Bottom Post Overlay -->
+              <div class="tiktok-bottom-overlay">
+                <div class="creator-username-row">
+                  <span class="creator-handle" id="creatorHandle">@peaceful_days</span>
+                  <span class="verified-badge" id="verifiedBadge"><i class="fa-solid fa-circle-check"></i></span>
+                </div>
+
+                <p class="post-caption" id="postCaption">
+                  5:00 AM morning routine ✨ Cultivating calm, daily discipline and mindful habits. Take care of your energy and everything aligns #mindfulmorning #aesthetic #wellbeing #morningroutine
+                </p>
+
+                <div class="music-track-row">
+                  <i class="fa-solid fa-music music-note-anim"></i>
+                  <span class="music-ticker" id="musicTicker">
+                    original audio - @peaceful_days • Chill Aesthetic Morning Lofi
+                  </span>
+                </div>
+              </div>
+
+              <!-- Contextual Reality Card -->
+              <div class="reality-insight-card" id="realityInsightCard">
+                <div class="insight-header">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                  <strong>The Human Side:</strong>
+                </div>
+                <p>A ten-second clip often takes an hour of careful posing and repeated takes. Remembering this allows us to treat ourselves with greater kindness and realism.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Simulator Explanatory Card -->
+          <div class="simulator-meta-card">
+            <h3>What happens when you press the button?</h3>
+            <p>
+              Online content is <strong>heavily curated</strong>. Artificial lighting, multiple takes, and audio adjustments often create an impression of seamless harmony that does not exist in everyday life.
+            </p>
+            <ul class="meta-points">
+              <li>
+                <i class="fa-solid fa-wand-magic-sparkles text-accent"></i>
+                <div>
+                  <strong>The Highlight Reel:</strong> We end up viewing exceptional moments as if they were a standard daily baseline.
+                </div>
+              </li>
+              <li>
+                <i class="fa-solid fa-heart-crack text-danger"></i>
+                <div>
+                  <strong>The Unspoken Cost:</strong> Quiet self-criticism, fear of missing out (FOMO), and the subtle fatigue of always trying to keep up.
+                </div>
+              </li>
+            </ul>
+            <div class="simulator-hint">
+              <i class="fa-solid fa-hand-pointer"></i> Try tapping the heart, reading the comments, or pressing <strong>"Reveal the Reality"</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         C. PSYCHOLOGY: LA REALIDAD DETRÁS DE LA PANTALLA
+         =============================================================== -->
+    <section class="reality-info-section" id="psychology">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag section-tag-cyan"><i class="fa-solid fa-brain"></i> DIGITAL PSYCHOLOGY</span>
+          <h2 class="section-title">The Science Behind <span class="gradient-text">Our Feeds</span></h2>
+          <p class="section-description">
+            Three psychological mechanisms that explain how passive scrolling can gently distort our perspective and well-being.
+          </p>
+        </div>
+
+        <div class="info-grid">
+          <!-- Card 1 -->
+          <article class="info-card">
+            <div class="info-card-icon icon-cyan">
+              <i class="fa-solid fa-filter-circle-xmark"></i>
+            </div>
+            <h3 class="info-card-title">1. The Selection Bias</h3>
+            <span class="info-card-subtitle">The Curated Gallery</span>
+            <p class="info-card-text">
+              Rarely do people publish their moments of doubt, exhaustion, or ordinary boredom. Your mind instinctively compares your unedited daily existence with the polished summaries of thousands of strangers, creating an artificial feeling of inadequacy.
+            </p>
+            <div class="info-card-footer">
+              <span class="tag"><i class="fa-solid fa-eye-slash"></i> Cognitive Distortion</span>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="info-card">
+            <div class="info-card-icon icon-purple">
+              <i class="fa-solid fa-arrows-split-up-and-left"></i>
+            </div>
+            <h3 class="info-card-title">2. Upward Comparison</h3>
+            <span class="info-card-subtitle">Conditioned Self-Esteem</span>
+            <p class="info-card-text">
+              Social comparison theory explains our natural drive to evaluate ourselves against peers. On image-centric feeds, comparison becomes relentless and upward, gradually chipping away at body satisfaction and genuine contentment.
+            </p>
+            <div class="info-card-footer">
+              <span class="tag"><i class="fa-solid fa-person-falling"></i> Social Evaluation</span>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="info-card">
+            <div class="info-card-icon icon-pink">
+              <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <h3 class="info-card-title">3. Variable Dopamine Loops</h3>
+            <span class="info-card-subtitle">The Slot Machine of Validation</span>
+            <p class="info-card-text">
+              Feeds rely on intermittent variable reward schedules—the very mechanism behind gambling machines. Unpredictable notifications stimulate dopamine surges followed by subtle dips, encouraging habituated checks and a longing for approval.
+            </p>
+            <div class="info-card-footer">
+              <span class="tag"><i class="fa-solid fa-fingerprint"></i> Behavioural Design</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         D. STATISTICS WITH OFFICIAL SOURCES
+         =============================================================== -->
+    <section class="stats-section" id="evidence">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag section-tag-purple"><i class="fa-solid fa-chart-pie"></i> OFFICIAL RESEARCH</span>
+          <h2 class="section-title">Insights from <span class="text-danger">Scientific Studies</span></h2>
+          <p class="section-description">
+            Recognised global health bodies have documented the measurable impact of intensive visual platform consumption on adolescents and young adults.
+          </p>
+        </div>
+
+        <div class="stats-grid">
+          <!-- Stat 1 -->
+          <div class="stat-card">
+            <div class="stat-number-wrapper">
+              <span class="stat-number" data-target="46">46</span><span class="stat-suffix">%</span>
+            </div>
+            <div class="stat-badge">Body Perception</div>
+            <p class="stat-description">
+              Of adolescents state that regular visual media consumption makes them feel <strong>more critical of their physical appearance</strong> and body image.
+            </p>
+            <div class="stat-source">
+              <i class="fa-solid fa-building-columns"></i> American Psychological Association (APA)
+            </div>
+          </div>
+
+          <!-- Stat 2 -->
+          <div class="stat-card highlight-card">
+            <div class="stat-number-wrapper">
+              <span class="stat-prefix">+</span><span class="stat-number" data-target="3">3</span><span class="stat-suffix">x</span>
+            </div>
+            <div class="stat-badge badge-warning">Emotional Well-being</div>
+            <p class="stat-description">
+              <strong>Higher likelihood</strong> of reporting persistent symptoms of anxiety and low mood among youths who spend over three hours daily on image-based networks.
+            </p>
+            <div class="stat-source">
+              <i class="fa-solid fa-stethoscope"></i> U.S. Surgeon General's Advisory
+            </div>
+          </div>
+
+          <!-- Stat 3 -->
+          <div class="stat-card">
+            <div class="stat-number-wrapper">
+              <span class="stat-number" data-target="97">97</span><span class="stat-suffix">%</span>
+            </div>
+            <div class="stat-badge">Daily Exposure</div>
+            <p class="stat-description">
+              Of surveyed teenagers encounter <strong>filtered or digitally retouched content daily</strong>, altering their baseline expectations of natural human variation.
+            </p>
+            <div class="stat-source">
+              <i class="fa-solid fa-child-reaching"></i> UNICEF - Youth & Digital Platforms
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         E. MYTHS VS. REALITIES (3D FLIP CARDS)
+         =============================================================== -->
+    <section class="myths-section" id="myths">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag"><i class="fa-solid fa-rotate"></i> 3D PERSPECTIVE CARDS</span>
+          <h2 class="section-title">Digital Myths vs. <span class="gradient-text">Psychological Realities</span></h2>
+          <p class="section-description">
+            Click, tap, or hover over each card to rotate it 180° and discover the grounded psychological truth behind popular online assumptions.
+          </p>
+        </div>
+
+        <div class="cards-3d-grid">
+          <!-- Flip Card 1 -->
+          <div class="flip-card" tabindex="0" role="button" aria-label="3D Card: Myth on social media happiness">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="card-status-badge myth-badge"><i class="fa-solid fa-xmark"></i> POPULAR MYTH</span>
+                <div class="card-icon-area">
+                  <i class="fa-solid fa-face-laugh-beam"></i>
+                </div>
+                <h3 class="card-title">"People who project flawless lives on their feed are genuinely happier."</h3>
+                <p class="card-instruction"><i class="fa-solid fa-arrows-rotate"></i> Click or tap to rotate</p>
+              </div>
+              <div class="flip-card-back">
+                <span class="card-status-badge reality-badge"><i class="fa-solid fa-check"></i> THE REALITY</span>
+                <div class="card-icon-area reality-icon">
+                  <i class="fa-solid fa-masks-theater"></i>
+                </div>
+                <h3 class="card-title-back">The Validation Mask</h3>
+                <p class="card-text-back">
+                  An insistent need to broadcast perfection often masks ordinary insecurities and a heavy dependence on public approval. Genuine contentment does not need an audience to feel valid.
+                </p>
+                <div class="card-stat-pill">APA Survey: 68% conceal low moments</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flip Card 2 -->
+          <div class="flip-card" tabindex="0" role="button" aria-label="3D Card: Myth on fitness and health">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="card-status-badge myth-badge"><i class="fa-solid fa-xmark"></i> POPULAR MYTH</span>
+                <div class="card-icon-area">
+                  <i class="fa-solid fa-dumbbell"></i>
+                </div>
+                <h3 class="card-title">"A fitness-focused physique is an automatic sign of total well-being."</h3>
+                <p class="card-instruction"><i class="fa-solid fa-arrows-rotate"></i> Click or tap to rotate</p>
+              </div>
+              <div class="flip-card-back">
+                <span class="card-status-badge reality-badge"><i class="fa-solid fa-check"></i> THE REALITY</span>
+                <div class="card-icon-area reality-icon">
+                  <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <h3 class="card-title-back">Beyond the Pose</h3>
+                <p class="card-text-back">
+                  Many prominent fitness photographs rely on acute dehydration, flattering angles, or restrictive eating patterns framed as 'dedication'. Authentic physical health includes mental flexibility and rest.
+                </p>
+                <div class="card-stat-pill">Over 80% use micro-retouching apps</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flip Card 3 -->
+          <div class="flip-card" tabindex="0" role="button" aria-label="3D Card: Myth on rapid influencer success">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="card-status-badge myth-badge"><i class="fa-solid fa-xmark"></i> POPULAR MYTH</span>
+                <div class="card-icon-area">
+                  <i class="fa-solid fa-rocket"></i>
+                </div>
+                <h3 class="card-title">"If you work hard enough, you can easily achieve an influencer lifestyle by twenty."</h3>
+                <p class="card-instruction"><i class="fa-solid fa-arrows-rotate"></i> Click or tap to rotate</p>
+              </div>
+              <div class="flip-card-back">
+                <span class="card-status-badge reality-badge"><i class="fa-solid fa-check"></i> THE REALITY</span>
+                <div class="card-icon-area reality-icon">
+                  <i class="fa-solid fa-hand-holding-dollar"></i>
+                </div>
+                <h3 class="card-title-back">The Curated Illusion</h3>
+                <p class="card-text-back">
+                  Behind viral success stories frequently lie production agencies, family wealth, or concealed debts incurred to stage an affluent lifestyle. Sustainable vocations take time and gradual growth.
+                </p>
+                <div class="card-stat-pill">Fewer than 0.2% earn a viable living</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         F. BEHIND THE SMILE (HIDDEN PROFILES)
+         =============================================================== -->
+    <section class="hidden-profiles-section" id="profiles">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag"><i class="fa-solid fa-mask"></i> HIDDEN PROFILES</span>
+          <h2 class="section-title">Behind the <span class="text-accent">Smile</span></h2>
+          <p class="section-description">
+            Press the switch on each social card to unveil the private struggles often concealed behind glamorous photographs.
+          </p>
+        </div>
+
+        <div class="profiles-grid">
+          <!-- Profile 1: @sophie_travels -->
+          <article class="profile-card" data-profile="sophie">
+            <div class="profile-header">
+              <img 
+                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" 
+                alt="Sophie's profile avatar" 
+                class="profile-avatar"
+              />
+              <div class="profile-user-info">
+                <div class="profile-handle-row">
+                  <strong>@sophie_travels</strong>
+                  <i class="fa-solid fa-circle-check verified-icon"></i>
+                </div>
+                <span class="profile-category">Travel & Lifestyle • 320k followers</span>
+              </div>
+            </div>
+
+            <div class="profile-image-viewport">
+              <img 
+                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" 
+                alt="Idyllic tropical beach in Thailand" 
+                class="profile-main-image filter-image"
+              />
+              <div class="reality-backdrop">
+                <div class="reality-content-wrap">
+                  <div class="reality-alert-badge">
+                    <i class="fa-solid fa-heart-crack"></i> EMOTIONAL REALITY
+                  </div>
+                  <h4>Travel Burnout & Loneliness</h4>
+                  <p>
+                    Sophie incurred credit debt to fund this trip to sustain brand contracts. She spends evenings in hotel rooms answering commercial emails, struggling with loneliness, and crying before recording enthusiastic stories.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-feed-details">
+              <div class="profile-actions-bar">
+                <button type="button" class="profile-switch-btn" data-target="sophie">
+                  <i class="fa-solid fa-eye-slash"></i>
+                  <span class="switch-btn-text">Reveal What Is Hidden</span>
+                </button>
+              </div>
+              <p class="profile-feed-caption">
+                <strong>@sophie_travels</strong> Waking up to these views reminds me that dreams really do happen 🌊🌴 Always keep your vibration high. #wanderlust #blessed
+              </p>
+            </div>
+          </article>
+
+          <!-- Profile 2: @matt_fitness -->
+          <article class="profile-card" data-profile="matt">
+            <div class="profile-header">
+              <img 
+                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80" 
+                alt="Matt's profile avatar" 
+                class="profile-avatar"
+              />
+              <div class="profile-user-info">
+                <div class="profile-handle-row">
+                  <strong>@matt_fitness</strong>
+                  <i class="fa-solid fa-circle-check verified-icon"></i>
+                </div>
+                <span class="profile-category">Fitness & Health Coach • 185k followers</span>
+              </div>
+            </div>
+
+            <div class="profile-image-viewport">
+              <img 
+                src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80" 
+                alt="Matt training in the gym with defined physique" 
+                class="profile-main-image filter-image"
+              />
+              <div class="reality-backdrop">
+                <div class="reality-content-wrap">
+                  <div class="reality-alert-badge">
+                    <i class="fa-solid fa-triangle-exclamation"></i> CONCEALED REALITY
+                  </div>
+                  <h4>Severe Body Dysmorphia</h4>
+                  <p>
+                    Matt copes with muscle dysmorphia and social isolation. He consistently declines dinners with mates out of panic regarding meal macros, and experiences deep guilt whenever observing his reflection without professional lighting.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-feed-details">
+              <div class="profile-actions-bar">
+                <button type="button" class="profile-switch-btn" data-target="matt">
+                  <i class="fa-solid fa-eye-slash"></i>
+                  <span class="switch-btn-text">Reveal What Is Hidden</span>
+                </button>
+              </div>
+              <p class="profile-feed-caption">
+                <strong>@matt_fitness</strong> No excuses. Your mindset is your only boundary 🔥 Never negotiate your standards if you desire growth. #fitlife #discipline
+              </p>
+            </div>
+          </article>
+
+          <!-- Profile 3: @lucas_ventures -->
+          <article class="profile-card" data-profile="lucas">
+            <div class="profile-header">
+              <img 
+                src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80" 
+                alt="Lucas's profile avatar" 
+                class="profile-avatar"
+              />
+              <div class="profile-user-info">
+                <div class="profile-handle-row">
+                  <strong>@lucas_ventures</strong>
+                  <i class="fa-solid fa-circle-check verified-icon"></i>
+                </div>
+                <span class="profile-category">Tech & Finance • 510k followers</span>
+              </div>
+            </div>
+
+            <div class="profile-image-viewport">
+              <img 
+                src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80" 
+                alt="Luxury sports car in metropolitan city" 
+                class="profile-main-image filter-image"
+              />
+              <div class="reality-backdrop">
+                <div class="reality-content-wrap">
+                  <div class="reality-alert-badge">
+                    <i class="fa-solid fa-fire"></i> EMOTIONAL STRAIN
+                  </div>
+                  <h4>Startup Debt & Insomnia</h4>
+                  <p>
+                    The car was rented for a three-hour commercial photoshoot. Lucas battles severe cash-flow debt, chronic sleep disruption, and the quiet dread of being exposed as an imposter while maintaining a mentor facade online.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-feed-details">
+              <div class="profile-actions-bar">
+                <button type="button" class="profile-switch-btn" data-target="lucas">
+                  <i class="fa-solid fa-eye-slash"></i>
+                  <span class="switch-btn-text">Reveal What Is Hidden</span>
+                </button>
+              </div>
+              <p class="profile-feed-caption">
+                <strong>@lucas_ventures</strong> While others rest, I build systems 🏎️💼 If you do not take bold risks, you settle for ordinary routines. #mindset #entrepreneur
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         G. THE READING LOUNGE: DEDICATED INFORMATIVE ESSAYS (NEW)
+         =============================================================== -->
+    <section class="reading-lounge-section" id="reading-lounge">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag section-tag-purple"><i class="fa-solid fa-book-open"></i> IN-DEPTH READING LOUNGE</span>
+          <h2 class="section-title">Understanding the <span class="gradient-text">Digital Mind</span></h2>
+          <p class="section-description">
+            A quiet space to read without distractions. Explore the psychology of social media, digital dysmorphia, and how to build sustainable digital boundaries.
+          </p>
+        </div>
+
+        <div class="reading-articles-grid">
+          <!-- Essay 1 -->
+          <article class="reading-article-card" id="article-1">
+            <div class="article-meta-header">
+              <span class="article-topic-pill">Social Psychology</span>
+              <span class="reading-time-pill"><i class="fa-regular fa-clock"></i> 3 min read</span>
+            </div>
+            <h3 class="reading-article-title">The Architecture of the Highlight Reel: Why We Compare</h3>
+            <p class="reading-article-excerpt">
+              When Leon Festinger proposed social comparison theory in 1954, human comparison was local and contextualised. Today, algorithms present us with millions of curated highlight reels every minute.
+            </p>
+            
+            <div class="reading-expandable-content">
+              <p>
+                In face-to-face communities, we observe our neighbours during their ordinary days: carrying groceries, looking tired after work, or having bad hair days. This natural balance provides an intuitive baseline of what being human feels like.
+              </p>
+              <p>
+                On modern feeds, however, that baseline disappears. An asymmetry is created: we possess full, unedited access to our own struggles, mistakes, and awkward mornings, but we only consume the top 1% of everyone else’s polished output. Your brain inevitably processes this skewed sample as reality, prompting feelings of falling behind even when you are progressing splendidly.
+              </p>
+              <div class="article-key-takeaway">
+                <strong>Key Takeaway:</strong> Remind yourself that you are comparing your behind-the-scenes footage with someone else’s promotional trailer. They are completely different categories.
+              </div>
+            </div>
+
+            <button type="button" class="btn-read-more" aria-expanded="false">
+              <span class="read-more-text">Read Full Article</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </article>
+
+          <!-- Essay 2 -->
+          <article class="reading-article-card" id="article-2">
+            <div class="article-meta-header">
+              <span class="article-topic-pill">Body Image</span>
+              <span class="reading-time-pill"><i class="fa-regular fa-clock"></i> 4 min read</span>
+            </div>
+            <h3 class="reading-article-title">Body Image in the Age of Micro-Editing & Digital Filters</h3>
+            <p class="reading-article-excerpt">
+              How subtle beauty filters, pore-smoothing algorithms, and automatic contouring gently distort our relationship with our natural physical appearance.
+            </p>
+
+            <div class="reading-expandable-content">
+              <p>
+                Historically, retouched photographs were limited to fashion magazines and billboard advertisements. We knew professional teams, stylists, and lighting designers had spent hours preparing each frame.
+              </p>
+              <p>
+                Today, smartphone cameras apply subtle skin-smoothing and jawline-narrowing filters by default. When our peers post casual everyday selfies that appear natural yet contain subtle algorithmic modifications, our brains internalise these impossible aesthetics as the new normal. Over time, looking into an ordinary mirror without digital correction can trigger feelings of dysmorphia and disappointment.
+              </p>
+              <div class="article-key-takeaway">
+                <strong>Key Takeaway:</strong> Skin texture, pores, and natural asymmetries are not imperfections to be smoothed away; they are biological signs of being alive.
+              </div>
+            </div>
+
+            <button type="button" class="btn-read-more" aria-expanded="false">
+              <span class="read-more-text">Read Full Article</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </article>
+
+          <!-- Essay 3 -->
+          <article class="reading-article-card" id="article-3">
+            <div class="article-meta-header">
+              <span class="article-topic-pill">Neuroscience</span>
+              <span class="reading-time-pill"><i class="fa-regular fa-clock"></i> 3 min read</span>
+            </div>
+            <h3 class="reading-article-title">The Dopamine Slot Machine: How Infinite Scroll Works</h3>
+            <p class="reading-article-excerpt">
+              Discover why pull-to-refresh and infinite scrolling feel so irresistibly magnetic, and how variable reward schedules influence human attention.
+            </p>
+
+            <div class="reading-expandable-content">
+              <p>
+                B.F. Skinner discovered that animals repeat behaviours most obsessively not when they receive rewards every time, but when rewards occur unpredictably. This psychological phenomenon is known as variable ratio reinforcement.
+              </p>
+              <p>
+                Every time you swipe down on your feed or pull to refresh, your brain does not know whether the next post will be hilarious, dull, inspiring, or controversial. That brief moment of anticipation releases dopamine—the neurotransmitter of desire and pursuit. Social apps are deliberately engineered around this loop to keep you engaged long after your intention has expired.
+              </p>
+              <div class="article-key-takeaway">
+                <strong>Key Takeaway:</strong> You are not lacking in willpower. You are simply navigating digital environments designed by behavioural scientists to maximise your dwell time.
+              </div>
+            </div>
+
+            <button type="button" class="btn-read-more" aria-expanded="false">
+              <span class="read-more-text">Read Full Article</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </article>
+
+          <!-- Essay 4 -->
+          <article class="reading-article-card" id="article-4">
+            <div class="article-meta-header">
+              <span class="article-topic-pill">Mindful Living</span>
+              <span class="reading-time-pill"><i class="fa-regular fa-clock"></i> 4 min read</span>
+            </div>
+            <h3 class="reading-article-title">Reclaiming Digital Peace: Practical Boundaries That Work</h3>
+            <p class="reading-article-excerpt">
+              You do not need to delete every application to regain your mental clarity. Learn sensible, sustainable micro-habits that protect your well-being.
+            </p>
+
+            <div class="reading-expandable-content">
+              <p>
+                Going completely 'off-grid' is often unsustainable in a connected world where academic, professional, and social ties live on digital platforms. A healthier approach is establishing intentional friction.
+              </p>
+              <p>
+                Start with simple physical boundaries: keep your phone off your bedside table at night, allowing your morning brain thirty quiet minutes before absorbing external opinions. Practise unfollowing or muting accounts that trigger quiet pangs of envy or body dissatisfaction—do so without guilt. Your feed should be a curated garden that nourishes you, not an open billboard that exhausts you.
+              </p>
+              <div class="article-key-takeaway">
+                <strong>Key Takeaway:</strong> Protecting your peace of mind is not avoidance; it is an act of self-respect in an attention-based economy.
+              </div>
+            </div>
+
+            <button type="button" class="btn-read-more" aria-expanded="false">
+              <span class="read-more-text">Read Full Article</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         H. ANONYMOUS COMMUNITY SURVEY (FIREBASE FIRESTORE SDK v10)
+         =============================================================== -->
+    <section class="survey-section" id="survey">
+      <div class="container">
+        <div class="survey-card-container">
+          <div class="survey-intro">
+            <span class="section-tag"><i class="fa-solid fa-shield-halved"></i> ANONYMOUS PARTICIPATION</span>
+            <h2 class="section-title">Community <span class="gradient-text">Reflection Survey</span></h2>
+            <p class="section-description">
+              Your responses are 100% anonymous and securely synchronized via <strong>Firebase Firestore</strong> to build an honest community picture of digital well-being.
+            </p>
+
+            <div class="privacy-guarantee">
+              <i class="fa-solid fa-user-shield"></i>
+              <div>
+                <strong>Complete Privacy Assured:</strong> We do not track names, email addresses, or identifying IP information.
+              </div>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <form class="survey-form" id="surveyForm" novalidate>
+            <!-- Question 1: Age Range -->
+            <div class="form-group">
+              <label for="surveyAge" class="form-label">
+                <span class="q-num">1</span> What is your age group?
+              </label>
+              <select id="surveyAge" name="age" class="form-select" required>
+                <option value="" disabled selected>Select your age group</option>
+                <option value="under_15">Under 15 years old</option>
+                <option value="15_18">15 to 18 years old</option>
+                <option value="19_24">19 to 24 years old</option>
+                <option value="25_30">25 to 30 years old</option>
+                <option value="over_30">Over 30 years old</option>
+              </select>
+            </div>
+
+            <!-- Question 2: Daily Hours in Short Video -->
+            <div class="form-group">
+              <label for="surveyHours" class="form-label">
+                <span class="q-num">2</span> Approximately how many hours do you spend daily watching short-form video (TikTok, Reels, Shorts)?
+              </label>
+              <div class="hours-slider-wrap">
+                <input 
+                  type="range" 
+                  id="surveyHours" 
+                  name="daily_hours" 
+                  min="0" 
+                  max="8" 
+                  step="0.5" 
+                  value="3" 
+                  class="custom-range"
+                />
+                <div class="range-display">
+                  <span id="rangeValueDisplay">3.0 hrs/day</span>
+                </div>
+              </div>
+              <div class="range-milestones">
+                <span>0h</span>
+                <span>2h</span>
+                <span>4h</span>
+                <span>6h</span>
+                <span>8h+</span>
+              </div>
+            </div>
+
+            <!-- Question 3: Comparison Impact Level (1 to 5) -->
+            <div class="form-group">
+              <label class="form-label">
+                <span class="q-num">3</span> How significantly does comparing yourself to online posts affect your mood or self-esteem?
+              </label>
+              <div class="rating-options-grid" role="radiogroup" aria-label="Level of emotional impact from comparison">
+                <label class="rating-box">
+                  <input type="radio" name="impact_level" value="1" required />
+                  <span class="rating-inner">
+                    <span class="rating-emoji">😌</span>
+                    <span class="rating-score">1</span>
+                    <span class="rating-text">Not at all</span>
+                  </span>
+                </label>
+                <label class="rating-box">
+                  <input type="radio" name="impact_level" value="2" />
+                  <span class="rating-inner">
+                    <span class="rating-emoji">😐</span>
+                    <span class="rating-score">2</span>
+                    <span class="rating-text">Slightly</span>
+                  </span>
+                </label>
+                <label class="rating-box">
+                  <input type="radio" name="impact_level" value="3" />
+                  <span class="rating-inner">
+                    <span class="rating-emoji">😕</span>
+                    <span class="rating-score">3</span>
+                    <span class="rating-text">Moderately</span>
+                  </span>
+                </label>
+                <label class="rating-box">
+                  <input type="radio" name="impact_level" value="4" />
+                  <span class="rating-inner">
+                    <span class="rating-emoji">😣</span>
+                    <span class="rating-score">4</span>
+                    <span class="rating-text">Significantly</span>
+                  </span>
+                </label>
+                <label class="rating-box">
+                  <input type="radio" name="impact_level" value="5" />
+                  <span class="rating-inner">
+                    <span class="rating-emoji">😫</span>
+                    <span class="rating-score">5</span>
+                    <span class="rating-text">Severely</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Question 4: Reflection (Optional) -->
+            <div class="form-group">
+              <label for="surveyReflection" class="form-label">
+                <span class="q-num">4</span> What healthy digital habit would you like to cultivate for your peace of mind? (Optional)
+              </label>
+              <textarea 
+                id="surveyReflection" 
+                name="reflection" 
+                rows="3" 
+                class="form-textarea" 
+                placeholder="For example: Muting accounts that trigger comparison, avoiding screen time in bed, or designating screen-free weekends..."
+              ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-submit-wrap">
+              <button type="submit" class="btn btn-primary btn-block btn-glow" id="submitSurveyBtn">
+                <span class="btn-text"><i class="fa-solid fa-paper-plane"></i> Submit Anonymous Response</span>
+                <span class="btn-spinner hidden"><i class="fa-solid fa-circle-notch fa-spin"></i> Saving...</span>
+              </button>
+            </div>
+
+            <div class="form-feedback hidden" id="surveyFeedback" role="alert"></div>
+          </form>
+
+          <!-- Live Results Widget -->
+          <div class="survey-live-results" id="surveyLiveResults">
+            <h4><i class="fa-solid fa-chart-simple"></i> Community Response Trend</h4>
+            <div class="results-bars">
+              <div class="result-bar-item">
+                <div class="bar-label">
+                  <span>Report moderate to significant comparison impact (Levels 3 to 5):</span>
+                  <strong id="statHighImpactPct">79%</strong>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill" id="barHighImpact" style="width: 79%;"></div>
+                </div>
+              </div>
+
+              <div class="result-bar-item">
+                <div class="bar-label">
+                  <span>Average daily short-form video consumption:</span>
+                  <strong id="statAvgHours">3.8 hrs/day</strong>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill purple-fill" id="barAvgHours" style="width: 63%;"></div>
+                </div>
+              </div>
+            </div>
+            <p class="community-note">
+              <i class="fa-solid fa-heart"></i> If you relate to these statistics, please remember that you are far from alone.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         I. SUPPORT & VERIFIED HEALTH RESOURCES (ARGENTINA / CHACO / RESISTENCIA)
+         =============================================================== -->
+    <section class="help-resources-section" id="support">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag section-tag-green"><i class="fa-solid fa-hand-holding-medical"></i> LOCAL SUPPORT & CRISIS CARE</span>
+          <h2 class="section-title">Support in <span class="text-green">Argentina, Chaco & Resistencia</span></h2>
+          <p class="section-description">
+            If digital pressure, anxiety, or low mood ever feel overwhelming, reaching out for compassionate, professional guidance is an act of courage.
+          </p>
+        </div>
+
+        <div class="help-cards-grid">
+          <!-- Advice Card -->
+          <div class="help-card advice-card">
+            <h3><i class="fa-solid fa-seedling"></i> Immediate Digital Well-being Habits</h3>
+            <ul class="help-tips-list">
+              <li>
+                <strong>Curate your feed actively:</strong> If an account consistently evokes self-doubt, envy, or body dissatisfaction, mute or unfollow it without second thoughts.
+              </li>
+              <li>
+                <strong>Screen-free morning cushion:</strong> Protect your first 30 minutes awake from notifications to allow your mind to wake up on its own terms.
+              </li>
+              <li>
+                <strong>Remember the behind-the-scenes:</strong> When a post sparks comparison, remember that you are looking at someone's best angle, not their whole life.
+              </li>
+              <li>
+                <strong>In-person grounding:</strong> Connect with a friend face to face or engage in an offline hobby where your eyes are not directed at a glass screen.
+              </li>
+            </ul>
+          </div>
+
+          <!-- Hotlines Card: Argentina, Chaco, Resistencia -->
+          <div class="help-card hotlines-card">
+            <h3><i class="fa-solid fa-phone-volume"></i> Free & Confidential Local Helplines</h3>
+            <p class="hotlines-intro">Professional, confidential assistance available 24 hours a day:</p>
+            
+            <div class="hotline-items">
+              <!-- Chaco: Línea 102 -->
+              <div class="hotline-item">
+                <span class="region-badge"><i class="fa-solid fa-location-dot"></i> Chaco Provincial</span>
+                <div class="hotline-details">
+                  <strong>Línea 102 Chaco (Children & Youths):</strong>
+                  <a href="tel:102" class="hotline-link"><i class="fa-solid fa-phone"></i> 102</a> • Free, 24/7 confidential listening & protection line.
+                </div>
+              </div>
+
+              <!-- Resistencia: Hospital Perrando Guardia Salud Mental -->
+              <div class="hotline-item">
+                <span class="region-badge"><i class="fa-solid fa-hospital"></i> Resistencia, Chaco</span>
+                <div class="hotline-details">
+                  <strong>Hospital Dr. Julio C. Perrando (Guardia de Salud Mental):</strong>
+                  <a href="tel:03624457288" class="hotline-link"><i class="fa-solid fa-phone"></i> (0362) 445-7288</a> • Av. 9 de Julio 1100, Resistencia. 24h Emergency Care.
+                </div>
+              </div>
+
+              <!-- Argentina Nacional: CAS Línea 135 -->
+              <div class="hotline-item">
+                <span class="region-badge"><i class="fa-solid fa-shield-heart"></i> Argentina Nacional</span>
+                <div class="hotline-details">
+                  <strong>Centro de Asistencia al Suicida (CAS):</strong>
+                  <a href="tel:135" class="hotline-link"><i class="fa-solid fa-phone"></i> 135</a> / <a href="tel:01152751135" class="hotline-link">(011) 5275-1135</a> • Free 24h line across Argentina.
+                </div>
+              </div>
+
+              <!-- Argentina Nacional: 0800 Salud Mental Responde -->
+              <div class="hotline-item">
+                <span class="region-badge"><i class="fa-solid fa-building-columns"></i> Ministerio de Salud de la Nación</span>
+                <div class="hotline-details">
+                  <strong>Salud Mental Responde (National Guidance):</strong>
+                  <a href="tel:08009990091" class="hotline-link"><i class="fa-solid fa-phone"></i> 0800-999-0091</a> • Professional mental health orientation.
+                </div>
+              </div>
+
+              <!-- Emergencias Chaco -->
+              <div class="hotline-item">
+                <span class="region-badge"><i class="fa-solid fa-truck-medical"></i> Emergencias Médicas</span>
+                <div class="hotline-details">
+                  <strong>Emergencias Sanitarias Chaco:</strong>
+                  <a href="tel:107" class="hotline-link"><i class="fa-solid fa-phone"></i> 107</a> / <a href="tel:911" class="hotline-link">911</a> • Acute psychiatric or medical emergency support.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verified Institutional Web Portals -->
+        <div class="verified-resources-wrap">
+          <h3><i class="fa-solid fa-certificate"></i> Verified Mental Health Portals & Resources</h3>
+          <div class="verified-links-grid">
+            <a href="https://www.argentina.gob.ar/salud/mental" target="_blank" rel="noopener noreferrer" class="verified-link-card">
+              <i class="fa-solid fa-landmark"></i>
+              <div>
+                <strong>Dirección Nacional de Salud Mental</strong>
+                <span>argentina.gob.ar • Official guidelines & programmes</span>
+              </div>
+            </a>
+
+            <a href="https://hablemosdetodo.gob.ar" target="_blank" rel="noopener noreferrer" class="verified-link-card">
+              <i class="fa-solid fa-comments"></i>
+              <div>
+                <strong>Hablemos de Todo (Argentina)</strong>
+                <span>hablemosdetodo.gob.ar • Youth portal for anxiety & relationships</span>
+              </div>
+            </a>
+
+            <a href="https://hospitalbonaparte.anlis.gob.ar" target="_blank" rel="noopener noreferrer" class="verified-link-card">
+              <i class="fa-solid fa-hospital-user"></i>
+              <div>
+                <strong>Hospital Laura Bonaparte</strong>
+                <span>hospitalbonaparte.anlis.gob.ar • National mental health reference</span>
+              </div>
+            </a>
+
+            <a href="https://www.who.int/health-topics/mental-health" target="_blank" rel="noopener noreferrer" class="verified-link-card">
+              <i class="fa-solid fa-globe"></i>
+              <div>
+                <strong>World Health Organisation (WHO)</strong>
+                <span>who.int • Global research on youth digital well-being</span>
+              </div>
+            </a>
+
+            <a href="https://www.casbuenosaires.org.ar" target="_blank" rel="noopener noreferrer" class="verified-link-card">
+              <i class="fa-solid fa-life-ring"></i>
+              <div>
+                <strong>Centro de Asistencia al Suicida</strong>
+                <span>casbuenosaires.org.ar • Articles & support guides</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         J. ABOUT THE CREATORS: 4TH-YEAR ENGLISH STUDENTS (UNNE)
+         =============================================================== -->
+    <section class="creators-section" id="about-us">
+      <div class="container">
+        <div class="creators-card">
+          <div class="creators-header">
+            <span class="section-tag section-tag-purple">
+              <i class="fa-solid fa-graduation-cap"></i> STUDENT-LED CAMPAIGN • UNNE
+            </span>
+            <h2 class="creators-title">Who Is Behind <span class="gradient-text">This Movement?</span></h2>
+            <p class="creators-subtitle">
+              Conceived, researched, and authored by a collective of <strong>4th-year English students</strong> from the <strong>Languages Department (Departamento de Idiomas) at Universidad Nacional del Nordeste (UNNE)</strong> in Resistencia, Chaco.
+            </p>
+          </div>
+
+          <div class="creators-grid">
+            <!-- Story Box -->
+            <div class="creators-story-box">
+              <h3><i class="fa-solid fa-quote-left"></i> Language as an Active Medium in Real-World Contexts</h3>
+              <p>
+                For our team of fourth-year English students at the UNNE Languages Department, this initiative is a purposeful way to use language in real-world contexts. It enables us to feed back positively into our own learning through wholesome, constructive initiatives like this one—using English as our active medium to dismantle digital illusions and foster genuine well-being across our student community.
+              </p>
+              <p>
+                Throughout our senior year, our discussions frequently examined how contemporary digital spaces shape youth self-esteem and emotional pressure in our region. We noticed our peers—and often ourselves—quietly wrestling with the unspoken expectation to project flawless lives, endless discipline, and aesthetic perfection.
+              </p>
+              <p>
+                By bringing this campaign to life through our English communication, we establish a meaningful bridge between global psychological research and our regional realities in Chaco and Corrientes. Language is at its most transformative when it enriches both our professional path and our community's emotional well-being.
+              </p>
+            </div>
+
+            <!-- Pillars Box -->
+            <div class="creators-pillars-box">
+              <h3><i class="fa-solid fa-compass"></i> Our Core Pillars</h3>
+              <ul class="pillars-list">
+                <li>
+                  <strong>Critical Digital Literacy:</strong> Dismantling algorithmic illusions through informed psychological evidence and honest conversation.
+                </li>
+                <li>
+                  <strong>Empathetic English in Action:</strong> Using our English communication to connect global insights with local realities in Argentina.
+                </li>
+                <li>
+                  <strong>Regional Solidarity (Chaco & Corrientes):</strong> Ensuring students and young adults in Resistencia know exactly where to find free, compassionate mental health assistance.
+                </li>
+              </ul>
+
+              <div class="university-badges-wrap">
+                <span class="uni-pill"><i class="fa-solid fa-university"></i> UNNE - Chaco & Corrientes</span>
+                <span class="uni-pill"><i class="fa-solid fa-language"></i> Departamento de Idiomas</span>
+                <span class="uni-pill"><i class="fa-solid fa-user-graduate"></i> 4th-Year English Cohort</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-left">
+        <div class="footer-logo">
+          <i class="fa-solid fa-brain"></i> Have already <strong>I?</strong>
+        </div>
+        <p class="footer-tagline">
+          An awareness initiative examining the emotional realities of social media algorithms and digital comparison. Created by 4th-Year Students of English, Languages Department — Universidad Nacional del Nordeste (UNNE), Resistencia, Chaco, Argentina.
+        </p>
+      </div>
+
+      <div class="footer-right">
+        <div class="footer-links-group">
+          <h4>Exploration</h4>
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#simulator">TikTok Simulator</a></li>
+            <li><a href="#reading-lounge">The Reading Lounge</a></li>
+            <li><a href="#about-us">Our Movement (UNNE)</a></li>
+            <li><a href="#survey">Community Survey</a></li>
+          </ul>
+        </div>
+        <div class="footer-links-group">
+          <h4>Support & Evidence</h4>
+          <ul>
+            <li><a href="#support">Local Hotlines (Chaco)</a></li>
+            <li><a href="#evidence">Official Research</a></li>
+            <li><a href="https://www.unne.edu.ar" target="_blank" rel="noopener noreferrer">UNNE Official Portal</a></li>
+            <li><a href="https://www.argentina.gob.ar/salud/mental" target="_blank" rel="noopener noreferrer">Salud Mental Argentina</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-container">
+        <p>© 2026 "Have already I?" Campaign. Developed with dedication by 4th-Year English Students, UNNE (Languages Department).</p>
+        <div class="footer-social-icons">
+          <span><i class="fa-solid fa-heart"></i> Look after your peace of mind</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core JavaScript File & Immediate Inlined Bootstrapper -->
+  <script src="script.js"></script>
+</body>
+</html>
