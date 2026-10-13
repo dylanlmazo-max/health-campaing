@@ -1,19 +1,32 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en-GB" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Have already I? | Digital Well-being & Social Media Awareness (UNNE)</title>
+  <title>NORUSH | You Are Enough — Digital Well-being & Social Media Awareness (UNNE)</title>
   <meta name="description" content="An empathetic, interactive exploration of social media's impact on mental well-being, dismantling digital perfectionism and encouraging mindful connection.">
-  <meta name="theme-color" content="#0a0b12">
+  <meta name="theme-color" content="#000000">
+  <meta name="color-scheme" content="dark light">
+
+  <!-- Appearance is resolved before first paint so the page never flashes
+       the wrong background. Kept tiny and dependency-free. -->
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('norush_theme');
+        var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#000000' : '#ffffff');
+      } catch (e) { /* defaults to dark */ }
+    })();
+  </script>
 
   <!-- Favicon SVG -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
 
-  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Typography: the platform system font (SF Pro on Apple devices).
+       No webfont request, no flash of unstyled text. -->
 
   <!-- Font Awesome 6.5 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -21,17 +34,13 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="dark-mode">
-  <!-- Ambient background glow elements -->
-  <div class="ambient-glow glow-1" aria-hidden="true"></div>
-  <div class="ambient-glow glow-2" aria-hidden="true"></div>
-
+<body>
   <!-- SITE HEADER / NAVIGATION -->
   <header class="site-header">
     <div class="container header-container">
       <a href="#hero" class="brand-logo" id="brandLogo">
         <span class="logo-icon"><i class="fa-solid fa-brain"></i></span>
-        <span class="logo-text">Have already <strong>I?</strong></span>
+        <span class="logo-text">NORUSH</span>
       </a>
 
       <!-- Mobile / tablet app bar: current section title (hidden on desktop) -->
@@ -61,6 +70,11 @@
           <li><a href="#support" class="nav-link"><i class="fa-solid fa-hand-holding-heart"></i> Support</a></li>
         </ul>
       </nav>
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to light appearance" aria-pressed="false">
+        <i class="fa-solid fa-sun theme-icon-light" aria-hidden="true"></i>
+        <i class="fa-solid fa-moon theme-icon-dark" aria-hidden="true"></i>
+      </button>
+
       <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mainNav">
         <i class="fa-solid fa-bars"></i>
       </button>
@@ -92,9 +106,10 @@
             <i class="fa-solid fa-graduation-cap"></i> 4th-Year English Students • UNNE Languages Dept
           </div>
         </div>
-        <h1 class="hero-title">
-          Have already <span class="gradient-text">I?</span>
-        </h1>
+        <h1 class="hero-title">NORUSH</h1>
+
+        <p class="hero-keyline">YOU ARE ENOUGH</p>
+
         <p class="hero-subtitle">
           We often compare our ordinary behind-the-scenes moments with everyone else’s polished highlights. Social media displays what people choose to share, not what they quietly carry. Understanding this distinction is the first step towards reclaiming your peace of mind.
         </p>
@@ -545,7 +560,7 @@
                   <div class="reality-alert-badge">
                     <i class="fa-solid fa-heart-crack"></i> EMOTIONAL REALITY
                   </div>
-                  <h4>Travel Burnout & Loneliness</h4>
+                  <h3>Travel Burnout & Loneliness</h3>
                   <p>
                     Sophie incurred credit debt to fund this trip to sustain brand contracts. She spends evenings in hotel rooms answering commercial emails, struggling with loneliness, and crying before recording enthusiastic stories.
                   </p>
@@ -594,7 +609,7 @@
                   <div class="reality-alert-badge">
                     <i class="fa-solid fa-triangle-exclamation"></i> CONCEALED REALITY
                   </div>
-                  <h4>Severe Body Dysmorphia</h4>
+                  <h3>Severe Body Dysmorphia</h3>
                   <p>
                     Matt copes with muscle dysmorphia and social isolation. He consistently declines dinners with mates out of panic regarding meal macros, and experiences deep guilt whenever observing his reflection without professional lighting.
                   </p>
@@ -643,7 +658,7 @@
                   <div class="reality-alert-badge">
                     <i class="fa-solid fa-fire"></i> EMOTIONAL STRAIN
                   </div>
-                  <h4>Startup Debt & Insomnia</h4>
+                  <h3>Startup Debt & Insomnia</h3>
                   <p>
                     The car was rented for a three-hour commercial photoshoot. Lucas battles severe cash-flow debt, chronic sleep disruption, and the quiet dread of being exposed as an imposter while maintaining a mentor facade online.
                   </p>
@@ -810,7 +825,7 @@
             <span class="section-tag"><i class="fa-solid fa-shield-halved"></i> ANONYMOUS PARTICIPATION</span>
             <h2 class="section-title">Community <span class="gradient-text">Reflection Survey</span></h2>
             <p class="section-description">
-              Your responses are 100% anonymous and securely synchronized via <strong>Firebase Firestore</strong> to build an honest community picture of digital well-being.
+              We never ask for your name, your email or any contact detail. Every response is submitted <span id="surveyStorageNote">to the shared database so the figures below reflect real people, not a single device</span>, and answers can never be read back from the browser.
             </p>
 
             <div class="privacy-guarantee">
@@ -943,7 +958,7 @@
 
           <!-- Live Results Widget -->
           <div class="survey-live-results" id="surveyLiveResults">
-            <h4><i class="fa-solid fa-chart-simple"></i> Community Response Trend</h4>
+            <h3><i class="fa-solid fa-chart-simple"></i> Community Response Trend</h3>
             <div class="results-bars">
               <div class="result-bar-item">
                 <div class="bar-label">
@@ -1172,7 +1187,7 @@
     <div class="container footer-container">
       <div class="footer-left">
         <div class="footer-logo">
-          <i class="fa-solid fa-brain"></i> Have already <strong>I?</strong>
+          <i class="fa-solid fa-brain"></i> NORUSH
         </div>
         <p class="footer-tagline">
           An awareness initiative examining the emotional realities of social media algorithms and digital comparison. Created by 4th-Year Students of English, Languages Department — Universidad Nacional del Nordeste (UNNE), Resistencia, Chaco, Argentina.
@@ -1181,7 +1196,7 @@
 
       <div class="footer-right">
         <div class="footer-links-group">
-          <h4>Exploration</h4>
+          <h2 class="footer-group-title">Exploration</h2>
           <ul>
             <li><a href="#hero">Home</a></li>
             <li><a href="#simulator">TikTok Simulator</a></li>
@@ -1191,7 +1206,7 @@
           </ul>
         </div>
         <div class="footer-links-group">
-          <h4>Support & Evidence</h4>
+          <h2 class="footer-group-title">Support &amp; Evidence</h2>
           <ul>
             <li><a href="#support">Local Hotlines (Chaco)</a></li>
             <li><a href="#evidence">Official Research</a></li>
@@ -1204,7 +1219,7 @@
 
     <div class="footer-bottom">
       <div class="container footer-bottom-container">
-        <p>© 2026 "Have already I?" Campaign. Developed with dedication by 4th-Year English Students, UNNE (Languages Department).</p>
+        <p>© 2026 "NORUSH — You Are Enough" Campaign. Developed with dedication by 4th-Year English Students, UNNE (Languages Department).</p>
         <div class="footer-social-icons">
           <span><i class="fa-solid fa-heart"></i> Look after your peace of mind</span>
         </div>
@@ -1213,6 +1228,11 @@
   </footer>
 
   </div><!-- /.app-shell -->
+
+  <!-- Firebase credentials (kept in its own file so they are easy to
+       replace — see firebase-config.js). Optional: the survey works
+       without it, saving to this browser only. -->
+  <script src="firebase-config.js"></script>
 
   <!-- Core JavaScript File & Immediate Inlined Bootstrapper -->
   <script src="script.js"></script>

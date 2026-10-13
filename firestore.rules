@@ -1,0 +1,64 @@
+rules_version = '2';
+
+/*
+ * NORUSH — Firestore security rules
+ * ----------------------------------------------------------------
+ * Copy the whole contents of this file into:
+ *   Firebase Console > Firestore Database > Rules > Publish
+ *
+ * WHY THESE RULES EXIST
+ * This project collects ANONYMOUS mental-health answers. The rules are
+ * deliberately strict so that a visitor of the website can ADD an
+ * anonymous response but can never READ the collection back. Without
+ * this, anyone could open the developer tools and download every
+ * response that other people sent.
+ *
+ * If `allow read` were "true", the responses of every participant
+ * would be public to anyone who wanted them.
+ */
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Survey responses.
+    match /encuestas_salud_mental/{docId} {
+
+      // Anyone may submit one anonymous response.
+      allow create: if request.resource.data.keys()
+                        .hasOnly([
+                          'age_range',
+                          'daily_hours',
+                          'impact_score',
+                          'reflection',
+                          'created_at',
+                          'server_timestamp',
+                          'client_token'
+                        ])
+                    // Nothing identifying may be stored.
+                    && !request.resource.data.keys().hasAny([
+                         'name', 'email', 'phone', 'ip', 'dni', 'address'
+                       ])
+                    // The three numeric/short fields are sanity-checked
+                    // so a stray script cannot dump megabytes into the DB.
+                    && request.resource.data.daily_hours is number
+                    && request.resource.data.daily_hours >= 0
+                    && request.resource.data.daily_hours <= 24
+                    && request.resource.data.impact_score is int
+                    && request.resource.data.impact_score >= 1
+                    && request.resource.data.impact_score <= 5
+                    && request.resource.data.reflection is string
+                    && request.resource.data.reflection.size() <= 2000
+                    && request.resource.data.age_range is string
+                    && request.resource.data.age_range.size() <= 40;
+
+      // Responses are write-only: nobody may read, update or delete them
+      // from the client. Only a trusted server (or you, in the console)
+      // can access the data.
+      allow read, update, delete: if false;
+    }
+
+    // Nothing else is writable.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

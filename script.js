@@ -1,18 +1,283 @@
 /**
- * BEHIND THE SCREEN - INTERACTIVE CORE LOGIC & ACCESSIBILITY
+ * HAVE ALREADY I? — INTERACTIVE CORE LOGIC
  * Written in natural British English (CEFR B2)
- * 
+ *
  * Features:
- * 1. TikTok 9:16 Interactive Simulator (Filter vs. Authentic Reality with glitch effect)
- * 2. Likes counter & interactive creator actions
- * 3. 3D Flip Cards (Myths vs. Realities)
- * 4. Hidden Profiles ("Behind the Smile")
- * 5. Animated statistics counter with guaranteed execution fallback
- * 6. The Reading Lounge (Expandable deep-dive educational articles)
- * 7. Anonymous Community Survey (Firebase Firestore v10 modular + LocalStorage resilience)
- * 8. Responsive navigation & custom toast notifications
- * 9. Responsive App Shell: a hub screen plus an internal menu on phone & tablet
+ * 1. Spring engine (interruptible, velocity-aware) — the motion backbone
+ * 2. Press feedback on pointer-down for every interactive control
+ * 3. TikTok 9:16 Interactive Simulator (Filter vs. Authentic Reality)
+ * 4. 3D Flip Cards (Myths vs. Realities)
+ * 5. Hidden Profiles ("Behind the Smile")
+ * 6. Animated statistics counters
+ * 7. The Reading Lounge (expandable essays)
+ * 8. Anonymous Community Survey (Firestore v10 + LocalStorage fallback)
+ * 9. Responsive app shell: hub + grouped drawer on phone and tablet
  */
+
+// ===============================================================
+// 0. SPRING ENGINE
+// -----------------------------------------------------------------
+// A spring has no fixed duration: its settle time emerges from the
+// parameters. Because it always animates from the current on-screen
+// value and accepts an initial velocity, it stays interruptible — the
+// user can redirect it mid-flight without a visible jump.
+// ===============================================================
+
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+/** Every running spring, keyed by element, so a retarget can blend. */
+const activeSprings = new WeakMap();
+
+/**
+ * Physical constants behind Apple's two designer-facing parameters.
+ * zeta = damping ratio (1 = critically damped, no overshoot)
+ * omega = angular frequency, derived from `response`
+ */
+function springProfile(zeta, response) {
+  const omega = (2 * Math.PI) / response;
+  return { zeta, omega };
+}
+
+/**
+ * Animate an element's numeric CSS property with a spring.
+ * Starts from the live computed value (the presentation value), so an
+ * interruption never jumps.
+ *
+ * @param {Element} el
+ * @param {string} property  e.g. "transformX", "opacity"
+ * @param {number} target
+ * @param {object} [options] { zeta, response, velocity, unit, onUpdate, onComplete }
+ */
+function springTo(el, property, target, options = {}) {
+  if (!el) return;
+
+  // Reduced motion: land on the target, no movement.
+  if (prefersReducedMotion.matches) {
+    const read = readSpringValue(el, property);
+    if (options.onUpdate) options.onUpdate(read ?? target, target);
+    applySpringValue(el, property, target, options.unit || "");
+    if (options.onComplete) options.onComplete();
+    return;
+  }
+
+  // Carry over any in-flight animation so reversal never hard-cuts.
+  const running = activeSprings.get(el);
+  const current = (running && running.property === property)
+    ? running.value
+    : (readSpringValue(el, property) ?? target);
+
+  // Instant re-target to the same place: nothing to do.
+  if (Math.abs(current - target) < 0.01) {
+    if (options.onUpdate) options.onUpdate(current, target);
+    if (options.onComplete) options.onComplete();
+    return;
+  }
+
+  const { zeta, omega } = springProfile(
+    options.zeta ?? 1,
+    options.response ?? 0.4
+  );
+
+  // Apple ships relative velocity when normalising; Motion takes px/s.
+  let velocity = options.velocity ?? 0;
+  if (options.velocityIsRelative && (target - current) !== 0) {
+    velocity = (target - current) * options.velocity;
+  }
+
+  const x0 = current - target;              // displacement from rest
+  let rafId = 0;
+  let startTime = 0;
+  let stopped = false;
+
+  const state = {
+    property,
+    value: current,
+    stop() {
+      stopped = true;
+      cancelAnimationFrame(rafId);
+      activeSprings.delete(el);
+    }
+  };
+
+  function step(now) {
+    if (stopped) return;
+    if (!startTime) startTime = now;
+
+    const elapsed = Math.min((now - startTime) / 1000, 0.35);
+    const t = omega * elapsed;
+
+    // Analytic solution for a damped harmonic oscillator.
+    let position;
+    if (zeta < 1) {
+      const wd = omega * Math.sqrt(1 - zeta * zeta);
+      const decay = Math.exp(-zeta * omega * elapsed);
+      position = decay * (
+        x0 * Math.cos(wd * elapsed) +
+        ((velocity + zeta * omega * x0) / wd) * Math.sin(wd * elapsed)
+      );
+    } else {
+      position = (x0 + (velocity + omega * x0) * elapsed) * Math.exp(-omega * elapsed);
+    }
+
+    const next = target + position;
+    state.value = next;
+    applySpringValue(el, property, next, options.unit || "");
+
+    if (options.onUpdate) options.onUpdate(next, target);
+
+    // Settled when both displacement and velocity are negligible.
+    if (elapsed > 0.35 || Math.abs(next - target) < 0.01) {
+      applySpringValue(el, property, target, options.unit || "");
+      activeSprings.delete(el);
+      if (options.onComplete) options.onComplete();
+      return;
+    }
+
+    rafId = requestAnimationFrame(step);
+  }
+
+  // If something else is animating this element, stop it cleanly first.
+  if (running && running !== state) running.stop();
+
+  activeSprings.set(el, state);
+  rafId = requestAnimationFrame(step);
+}
+
+/** Read the element's current on-screen value for a spring property. */
+function readSpringValue(el, property) {
+  const cs = window.getComputedStyle(el);
+  if (property === "opacity") {
+    const v = parseFloat(cs.opacity);
+    return Number.isFinite(v) ? v : 1;
+  }
+  if (property === "transformX" || property === "scale") {
+    const t = cs.transform;
+    if (!t || t === "none") return property === "scale" ? 1 : 0;
+    const m = new DOMMatrixReadOnly(t);
+    return property === "transformX" ? m.m41 : m.a;
+  }
+  return null;
+}
+
+function applySpringValue(el, property, value, unit) {
+  if (property === "opacity") {
+    el.style.opacity = String(Math.min(1, Math.max(0, value)));
+  } else if (property === "transformX") {
+    el.style.transform = `translate3d(${value}${unit || "px"}, 0, 0)`;
+  } else if (property === "scale") {
+    el.style.transform = `scale(${value})`;
+  }
+}
+
+// ===============================================================
+// 0b. PRESS FEEDBACK — respond on pointer-down, not on release
+// ===============================================================
+function initPressFeedback() {
+  const PRESSABLE = [
+    ".btn", ".nav-link", ".action-btn", ".profile-switch-btn",
+    ".btn-read-more", ".rating-box", ".hotline-link",
+    ".verified-link-card", ".flip-card", ".hub-support-line a"
+  ].join(",");
+
+  document.querySelectorAll(PRESSABLE).forEach(el => {
+    // Visual highlight the instant the finger lands.
+    el.addEventListener("pointerdown", () => {
+      el.style.setProperty("--press", "1");
+    }, { passive: true });
+
+    const release = () => el.style.setProperty("--press", "0");
+    el.addEventListener("pointerup", release, { passive: true });
+    el.addEventListener("pointercancel", release, { passive: true });
+    el.addEventListener("pointerleave", release, { passive: true });
+  });
+}
+
+// ===============================================================
+// 0c. APPEARANCE — light / dark
+// -----------------------------------------------------------------
+// The choice is persisted and, on a first visit, seeded from the
+// operating system so the page never flashes the wrong appearance.
+// ===============================================================
+const THEME_KEY = "norush_theme";
+
+function readStoredTheme() {
+  try { return localStorage.getItem(THEME_KEY); } catch { return null; }
+}
+
+function storeTheme(theme) {
+  try { localStorage.setItem(THEME_KEY, theme); } catch { /* private mode */ }
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+
+  const toggle = document.getElementById("themeToggle");
+  if (toggle) {
+    const isDark = theme === "dark";
+    // The label and the icon both name the mode you would switch TO.
+    toggle.setAttribute("aria-pressed", String(isDark));
+    toggle.setAttribute(
+      "aria-label",
+      isDark ? "Switch to light appearance" : "Switch to dark appearance"
+    );
+  }
+
+  // Keep the browser chrome (address bar on mobile) in step with the page.
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", theme === "dark" ? "#000000" : "#ffffff");
+
+  document.dispatchEvent(new CustomEvent("themechange", { detail: { theme } }));
+}
+
+function initTheme() {
+  const systemLight = window.matchMedia("(prefers-color-scheme: light)");
+  const stored = readStoredTheme();
+
+  // No stored preference: follow the system, and keep following it live.
+  applyTheme(stored || (systemLight.matches ? "light" : "dark"));
+
+  const onSystemChange = (e) => {
+    if (!readStoredTheme()) applyTheme(e.matches ? "light" : "dark");
+  };
+  if (typeof systemLight.addEventListener === "function") {
+    systemLight.addEventListener("change", onSystemChange);
+  } else if (typeof systemLight.addListener === "function") {
+    systemLight.addListener(onSystemChange);
+  }
+
+  const toggle = document.getElementById("themeToggle");
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      const next = document.documentElement.getAttribute("data-theme") === "dark"
+        ? "light"
+        : "dark";
+      storeTheme(next);
+      applyTheme(next);
+    });
+  }
+}
+
+// ===============================================================
+// 0d. SURVEY PRIVACY NOTE
+// -----------------------------------------------------------------
+// The copy must not promise a shared database that is not actually
+// connected, so it adapts to the real configuration.
+// ===============================================================
+function initSurveyPrivacyNote() {
+  const note = document.getElementById("surveyStorageNote");
+  if (!note) return;
+
+  const configured = Boolean(window.NORUSH_FIREBASE_CONFIG) &&
+    ["apiKey", "authDomain", "projectId", "appId"].every(
+      (k) => window.NORUSH_FIREBASE_CONFIG[k] &&
+             !String(window.NORUSH_FIREBASE_CONFIG[k]).startsWith("YOUR_")
+    );
+
+  if (!configured) {
+    note.textContent =
+      "on this device only, because the shared database is not connected yet";
+  }
+}
 
 // ===============================================================
 // 1. TIKTOK SIMULATOR DATA (B2 BRITISH ENGLISH)
@@ -354,25 +619,35 @@ function initSurvey() {
       created_at: new Date().toISOString()
     };
 
+    // Always keep a local copy first: if the network or Firestore fails,
+    // the response is never lost.
+    saveToLocalStorage(surveyData);
+
+    // Then try the cloud. The message reflects what actually happened
+    // rather than always claiming a sync that may not have run.
+    let storedOnline = false;
     try {
-      // Attempt to save locally or via Firestore
-      saveToLocalStorage(surveyData);
-
-      // Dynamic Firestore save if available
-      trySyncToFirestore(surveyData);
-
-      showFormFeedback("Thank you for sharing your experience. Your anonymous response has been recorded and helps illuminate digital well-being.", "success");
-      form.reset();
-      if (rangeDisplay) rangeDisplay.textContent = "3.0 hrs/day";
-      updateLiveCommunityStats(surveyData.impact_score, surveyData.daily_hours);
+      storedOnline = await trySyncToFirestore(surveyData);
     } catch (err) {
-      console.warn("Survey submission fallback:", err);
-      saveToLocalStorage(surveyData);
-      showFormFeedback("Your response has been saved securely. Thank you for participating!", "success");
-      form.reset();
-    } finally {
-      setButtonLoading(false);
+      console.warn("Unexpected survey error:", err);
     }
+
+    if (storedOnline) {
+      showFormFeedback(
+        "Thank you for sharing your experience. Your anonymous response has been recorded and helps illuminate digital well-being.",
+        "success"
+      );
+    } else {
+      showFormFeedback(
+        "Thank you for sharing. Your response has been saved on this device only — it could not be sent to the shared database right now.",
+        "success"
+      );
+    }
+
+    form.reset();
+    if (rangeDisplay) rangeDisplay.textContent = "3.0 hrs/day";
+    updateLiveCommunityStats(surveyData.impact_score, surveyData.daily_hours);
+    setButtonLoading(false);
   });
 
   function setButtonLoading(loading) {
@@ -421,28 +696,70 @@ function initSurvey() {
     }
   }
 
-  // Graceful Firestore async sync
-  async function trySyncToFirestore(data) {
-    try {
-      const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
-      const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-      
-      const config = {
-        apiKey: "AIzaSyDemoKeySaludMentalBehindScreen2026",
-        authDomain: "detras-de-la-pantalla.firebaseapp.com",
-        projectId: "detras-de-la-pantalla-salud"
-      };
+  // ---------------------------------------------------------------
+  // Firestore sync — the response is sent anonymously and can never be
+  // read back from the browser. See firebase-config.js and
+  // firestore.rules for setup and the reason the rules are so strict.
+  // ---------------------------------------------------------------
+  const REQUIRED_CONFIG_KEYS = ["apiKey", "authDomain", "projectId", "appId"];
 
-      if (!config.apiKey.includes("DemoKey")) {
-        const app = initializeApp(config);
-        const db = getFirestore(app);
-        await addDoc(collection(db, "encuestas_salud_mental"), {
-          ...data,
-          server_timestamp: serverTimestamp()
-        });
-      }
-    } catch {
-      // Quietly handled by LocalStorage
+  /** True only when firebase-config.js holds real values. */
+  function hasFirebaseConfig() {
+    const cfg = window.NORUSH_FIREBASE_CONFIG;
+    if (!cfg) return false;
+    return REQUIRED_CONFIG_KEYS.every(
+      (key) => cfg[key] && !String(cfg[key]).startsWith("YOUR_")
+    );
+  }
+
+  /** Loads the SDK once and returns a ready Firestore handle. */
+  let dbPromise = null;
+  function getFirestoreDb() {
+    if (dbPromise) return dbPromise;
+
+    dbPromise = (async () => {
+      const cfg = window.NORUSH_FIREBASE_CONFIG;
+      const { initializeApp } = await import(
+        "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"
+      );
+      const { getFirestore } = await import(
+        "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
+      );
+      return getFirestore(initializeApp(cfg));
+    })();
+
+    // Let the next attempt retry cleanly if this one failed.
+    dbPromise.catch(() => { dbPromise = null; });
+    return dbPromise;
+  }
+
+  /**
+   * Sends one anonymous response to Firestore.
+   * Resolves to true when it was stored, false when it fell back to
+   * local storage (no config, offline, or the rules rejected it).
+   */
+  async function trySyncToFirestore(data) {
+    if (!hasFirebaseConfig()) return false;
+
+    try {
+      const { collection, addDoc, serverTimestamp } = await import(
+        "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
+      );
+      const db = await getFirestoreDb();
+
+      await addDoc(collection(db, "encuestas_salud_mental"), {
+        age_range: data.age_range,
+        daily_hours: data.daily_hours,
+        impact_score: data.impact_score,
+        reflection: data.reflection,
+        created_at: data.created_at,
+        server_timestamp: serverTimestamp()
+      });
+
+      return true;
+    } catch (err) {
+      console.warn("Firestore sync failed; keeping the local copy:", err);
+      return false;
     }
   }
 }
@@ -485,6 +802,19 @@ function initNavigation() {
         icon.classList.toggle("fa-bars", !willOpen);
         icon.classList.toggle("fa-xmark", willOpen);
       }
+
+      // Apple ships drawer/sheet springs slightly under-damped (0.8),
+      // because opening a sheet is a physical, momentum-carrying action.
+      if (willOpen && isAppMode()) {
+        navList.style.transform = "translate3d(100%, 0, 0)";
+        springTo(navList, "transformX", 0, { zeta: 0.85, response: 0.35 });
+      } else if (!willOpen && isAppMode()) {
+        springTo(navList, "transformX", 320, {
+          zeta: 1,
+          response: 0.3,
+          onComplete: () => { navList.style.transform = ""; }
+        });
+      }
     });
 
     navList.querySelectorAll("a").forEach(link => {
@@ -502,6 +832,38 @@ function initNavigation() {
       }
     });
   }
+
+  initHeaderScrollEdge();
+}
+
+/** Scroll edge effect: the chrome materialises only once content passes under it. */
+function initHeaderScrollEdge() {
+  const header = document.querySelector(".site-header");
+  const shell = document.getElementById("appShell");
+  if (!header) return;
+
+  let ticking = false;
+
+  // The active scroller changes with the layout: the window on desktop,
+  // the app shell on phone and tablet. Read both and take the larger.
+  function update() {
+    const windowY = window.scrollY || 0;
+    const shellY = shell ? shell.scrollTop : 0;
+    header.classList.toggle("is-scrolled", Math.max(windowY, shellY) > 8);
+    ticking = false;
+  }
+
+  // A single class toggle is cheap, and a timer (rather than rAF) keeps
+  // this working even when the tab is not being painted.
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    setTimeout(update, 16);
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  if (shell) shell.addEventListener("scroll", onScroll, { passive: true });
+  update();
 }
 
 // ===============================================================
@@ -539,6 +901,9 @@ function syncHeaderHeight() {
   }
 }
 
+/** The screen currently mounted in the app shell; null means the hub. */
+let activeViewKey = null;
+
 /** Show a single section (or the hub when viewKey is null) */
 function showAppView(viewKey, options = {}) {
   if (!isAppMode()) return;
@@ -551,6 +916,11 @@ function showAppView(viewKey, options = {}) {
   const navLinks = document.querySelectorAll(".nav-list .nav-link");
 
   if (!shell || !hub) return;
+
+  // Ignore a request for the screen that is already showing. Without this,
+  // two calls in the same tick reset opacity to 0 twice and the screen
+  // flickers instead of animating in.
+  if (!options.force && activeViewKey === (viewKey || null)) return;
 
   document.querySelectorAll(".app-shell > main > section").forEach(section => {
     section.classList.remove("app-view-active");
@@ -592,6 +962,22 @@ function showAppView(viewKey, options = {}) {
 
   syncHeaderHeight();
   shell.scrollTop = 0;
+
+  activeViewKey = viewKey || null;
+
+  // Materialise the incoming screen. Start from the live value and let the
+  // spring carry it to 1, so a fast re-tap never produces a jump (§3).
+  const incoming = viewKey && appViews[viewKey]
+    ? document.querySelector(appViews[viewKey].selector)
+    : hub;
+  if (incoming) {
+    const from = parseFloat(getComputedStyle(incoming).opacity);
+    if (Number.isFinite(from) && from < 1) {
+      springTo(incoming, "opacity", 1, { zeta: 1, response: 0.32 });
+    } else {
+      incoming.style.opacity = "";
+    }
+  }
 }
 
 /** Keep the header height in sync while the shell scrolls */
@@ -638,13 +1024,11 @@ function initAppShell() {
     });
   }
 
-  if (brandLogo) {
-    brandLogo.addEventListener("click", (e) => {
-      if (!isAppMode()) return;
-      e.preventDefault();
-      showAppView(null);
-    });
-  }
+  // NOTE: the brand logo (href="#hero") is intentionally NOT given its own
+  // click handler. The delegated document listener above already treats it
+  // as a hub target, and registering a second one made showAppView run
+  // twice per tap — restarting the entrance spring and making the hub
+  // flash and vanish.
 
   // Browser / Android back button
   window.addEventListener("popstate", () => {
@@ -725,6 +1109,9 @@ function showToast(message) {
 // FOOLPROOF INITIALIZATION (RUNS REGARDLESS OF READYSTATE)
 // ===============================================================
 function startApplication() {
+  initTheme();
+  initSurveyPrivacyNote();
+  initPressFeedback();
   initSimulator();
   initFlipCards();
   initHiddenProfiles();

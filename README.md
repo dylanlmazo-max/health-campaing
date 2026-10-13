@@ -1,4 +1,4 @@
-# Behind the Screen 🧠📱
+# NORUSH — You Are Enough 🧠📱
 
 > **Digital Well-being & Social Media Awareness Campaign**  
 > *"Beyond the curated feeds: An honest, empathetic reflection on social media and mental well-being."*
@@ -7,7 +7,7 @@
 
 ## 🌟 Overview
 
-**Behind the Screen** is an interactive, responsive web experience created to deconstruct digital perfectionism and illuminate the emotional realities of modern social media algorithms. Developed using modern web standards, an aesthetic dark mode, and fluent **CEFR B2 British English**, the application approaches youth mental health with tact, nuance, and grounded psychological evidence.
+**NORUSH — You Are Enough** is an interactive, responsive web experience created to deconstruct digital perfectionism and illuminate the emotional realities of modern social media algorithms. Developed using modern web standards, an aesthetic dark mode, and fluent **CEFR B2 British English**, the application approaches youth mental health with tact, nuance, and grounded psychological evidence.
 
 ---
 
@@ -108,15 +108,127 @@ collapses to a single column.
 
 ---
 
+## 🎨 Design System — Apple Design Language
+
+The interface follows Apple's design principles, translated to the web.
+
+| Principle | How it is applied |
+| --- | --- |
+| **Purpose** | One accent colour (`#3d9bff`) instead of a six-colour neon palette. The ambient glow blobs were removed entirely. |
+| **Simplicity** | The hub is a calm cover. Navigation exists in exactly one place (the three-bar menu), never duplicated. |
+| **Craft** | Hairline separators, continuous (pill) corner radii, one spacing scale, no arbitrary values. |
+| **Restraint** | Emphasis comes from weight, size and leading — never from gradient text or glows. |
+
+### Typography
+Uses the **platform system font** (`-apple-system` / SF Pro), so there is no webfont
+request and no flash of unstyled text. Tracking and leading are size-specific, as
+Apple specifies:
+
+- **Display** (hero, statistics): `letter-spacing: -0.035em` → `-0.045em`, `line-height: 1.04`
+- **Headings**: `letter-spacing: -0.022em`, `line-height: 1.08`
+- **Body**: `letter-spacing: -0.011em`, `line-height: 1.47`
+- **Small text**: slight positive tracking for legibility
+
+### Motion
+`script.js` contains a **spring engine** (`springTo()`) built on an analytic damped
+harmonic oscillator:
+
+- **Damping ratio** (overshoot) and **response** (speed) as the two designer-facing parameters.
+- Starts from the element's **live on-screen value**, so an interruption never jumps.
+- Carries **velocity across reversals** — reversing mid-flight blends instead of hard-cutting.
+- Drawer and sheet springs use `zeta 0.85` (a little overshoot, because opening is a
+  physical action); everything else defaults to critically damped `1.0`.
+- `prefers-reduced-motion` skips the spring and lands on the target value.
+
+Press feedback responds on **`pointerdown`**, not on release, via a `--press` custom
+property consumed by the CSS transforms.
+
+### Materials & depth
+- Translucent chrome: `backdrop-filter: blur() saturate()` with content scrolling underneath.
+- **Scroll edge effect** instead of a hard divider under the header.
+- Material weight encodes hierarchy; nothing stacks a light translucent surface on another.
+
+### Accessibility
+- `prefers-reduced-motion` — cross-fades replace slides and flips.
+- `prefers-reduced-transparency` — surfaces become solid.
+- `prefers-contrast: more` — near-solid backgrounds, defined borders.
+- `forced-colors: active` — Windows High Contrast support.
+- **Lighthouse: 100 accessibility / 100 best practices / 100 SEO.**
+
+### Appearance — light and dark
+A sun/moon toggle sits in the app bar. The choice is stored in
+`localStorage` and, on a first visit, seeded from `prefers-color-scheme`,
+so the page matches the operating system out of the box. A tiny inline
+script in `<head>` resolves the theme **before first paint**, so there is
+never a flash of the wrong background, and the `theme-color` meta tag is
+kept in step with the page.
+
+Both appearances were tuned separately: the light palette darkens the
+accent and the system colours so text still clears 4.5:1 on white, while
+the phone mockup and the TikTok screen keep their own fixed dark inks
+because they imitate a real device.
+
+---
+
+## 🔥 Firebase Setup (optional, ~5 minutes)
+
+The community survey stores responses in **Firebase Firestore**. Until a project
+is connected it keeps working and saves to the browser only — the privacy note
+and the confirmation message adapt so the page never claims a sync that did
+not happen.
+
+### 1. Create the project
+1. Sign in at [console.firebase.google.com](https://console.firebase.google.com).
+2. **Add project** — name it (e.g. `norush`). Analytics are not needed.
+3. Click the **Web** icon `</>` to register a web app. Skip Firebase Hosting.
+
+### 2. Paste the credentials
+Firebase shows a `firebaseConfig` object. Copy the values into
+**`firebase-config.js`**, replacing every `YOUR_...` placeholder.
+
+### 3. Create the database
+1. Menu → **Firestore Database** → **Create database**.
+2. Choose **Start in production mode**.
+3. Pick a region near you: `southamerica-east1` is closest to Argentina.
+
+### 4. Publish the rules — this part is not optional
+Open the **Rules** tab and paste `firestore.rules` from this project, then
+**Publish**.
+
+Without these rules the survey is unsafe: the default "test mode" lets any
+visitor read back every response other people sent. The rules in this project
+make the collection **write-only** — anyone can add an anonymous answer, and
+nobody can read, update or delete answers from the browser.
+
+### 5. Deploy
+Upload the folder to any static host (GitHub Pages, Netlify, Firebase Hosting).
+No build step is needed — it is plain HTML, CSS and JavaScript.
+
+### What gets stored
+| Field | Example |
+| --- | --- |
+| `age_range` | `19_24` |
+| `daily_hours` | `3.5` |
+| `impact_score` | `4` |
+| `reflection` | free text, max 2000 characters |
+| `created_at` | ISO timestamp |
+
+No name, email, phone or IP is ever requested or stored. The rules explicitly
+reject any document containing those keys.
+
+---
+
 ## 📂 Project Structure
 
 ```
 detras-de-la-pantalla/
-├── index.html       # Semantic HTML5 in British English (B2)
-├── styles.css       # Dark mode, Glassmorphism, 3D cards, responsive layout + hub
-├── script.js        # Core logic, simulator toggle, 3D flip, counters, app shell
-├── assets/          # Local media (tiktok_filtro.jpg, tiktok_ladob.jpg)
-└── README.md        # Documentation and deployment instructions
+├── index.html        # Semantic HTML5 in British English (B2)
+├── styles.css        # Apple design system: materials, type scale, app shell, hub
+├── script.js         # Spring engine, press feedback, simulator, app shell, survey
+├── firebase-config.js   # Paste your Firebase credentials here
+├── firestore.rules       # Firestore security rules (write-only collection)
+├── assets/           # Local media (tiktok_filtro.jpg, tiktok_ladob.jpg)
+└── README.md         # Documentation and deployment instructions
 ```
 
 ---
