@@ -767,14 +767,53 @@ function initSurvey() {
 // ===============================================================
 // 7. NAVIGATION: DESKTOP LINKS / MOBILE DRAWER / CUSTOM TOAST
 // ===============================================================
-function closeDrawer() {
+/**
+ * Opens or closes the drawer.
+ * The slide is a CSS transition on purpose: it runs on the compositor, so the
+ * panel always opens even when the main thread is throttled. A rAF spring
+ * would stall there and leave the menu looking open but not open.
+ */
+function setDrawer(open) {
   const menuBtn = document.getElementById("mobileMenuBtn");
   const navList = document.querySelector(".nav-list");
   const scrim = document.getElementById("navScrim");
+  if (!navList) return;
 
-  if (navList) navList.classList.remove("active");
+  // Clear any inline transform left over from an interrupted animation so
+  // the class toggle alone decides where the panel sits.
+  navList.style.transform = "";
+
+  navList.classList.toggle("active", open);
+  if (scrim) scrim.hidden = !open;
+  document.body.classList.toggle("nav-open", open);
+
+  if (menuBtn) {
+    menuBtn.setAttribute("aria-expanded", String(open));
+    const icon = menuBtn.querySelector("i");
+    if (icon) {
+      icon.classList.toggle("fa-bars", !open);
+      icon.classList.toggle("fa-xmark", open);
+    }
+  }
+}
+
+/** Puts the drawer in a known closed state without animating. */
+function resetDrawer() {
+  const menuBtn = document.getElementById("mobileMenuBtn");
+  const navList = document.querySelector(".nav-list");
+  const scrim = document.getElementById("navScrim");
+  if (!navList) return;
+
+  // Cancel any spring still in flight; otherwise it can leave an inline
+  // transform behind and the panel sits half-open on first paint.
+  const running = activeSprings.get(navList);
+  if (running) running.stop();
+
+  navList.style.transform = "";
+  navList.classList.remove("active");
   if (scrim) scrim.hidden = true;
   document.body.classList.remove("nav-open");
+
   if (menuBtn) {
     menuBtn.setAttribute("aria-expanded", "false");
     const icon = menuBtn.querySelector("i");
@@ -785,6 +824,10 @@ function closeDrawer() {
   }
 }
 
+function closeDrawer() {
+  setDrawer(false);
+}
+
 function initNavigation() {
   const menuBtn = document.getElementById("mobileMenuBtn");
   const navList = document.querySelector(".nav-list");
@@ -792,29 +835,7 @@ function initNavigation() {
 
   if (menuBtn && navList) {
     menuBtn.addEventListener("click", () => {
-      const willOpen = !navList.classList.contains("active");
-      navList.classList.toggle("active", willOpen);
-      if (scrim) scrim.hidden = !willOpen;
-      document.body.classList.toggle("nav-open", willOpen);
-      menuBtn.setAttribute("aria-expanded", String(willOpen));
-      const icon = menuBtn.querySelector("i");
-      if (icon) {
-        icon.classList.toggle("fa-bars", !willOpen);
-        icon.classList.toggle("fa-xmark", willOpen);
-      }
-
-      // Apple ships drawer/sheet springs slightly under-damped (0.8),
-      // because opening a sheet is a physical, momentum-carrying action.
-      if (willOpen && isAppMode()) {
-        navList.style.transform = "translate3d(100%, 0, 0)";
-        springTo(navList, "transformX", 0, { zeta: 0.85, response: 0.35 });
-      } else if (!willOpen && isAppMode()) {
-        springTo(navList, "transformX", 320, {
-          zeta: 1,
-          response: 0.3,
-          onComplete: () => { navList.style.transform = ""; }
-        });
-      }
+      setDrawer(!navList.classList.contains("active"));
     });
 
     navList.querySelectorAll("a").forEach(link => {
@@ -1042,7 +1063,7 @@ function initAppShell() {
     document.body.classList.toggle("app-mode", isAppMode());
 
     if (isAppMode()) {
-      closeDrawer();
+      resetDrawer();
       const hash = window.location.hash.slice(1);
       showAppView(appViews[hash] ? hash : null, { updateHash: false });
       syncHeaderHeight();

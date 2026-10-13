@@ -32,6 +32,7 @@
   --material-thick: rgba(120, 120, 128, 0.36);
   --material-chrome: rgba(22, 22, 24, 0.72);
   --material-card: rgba(28, 28, 30, 0.68);
+  --material-drawer: rgba(22, 22, 24, 0.88);
 
   /* Vibrancy: high-contrast text over translucent surfaces.
      Tertiary is the faintest tier, but it still carries real body-size
@@ -107,6 +108,7 @@
   --material-thick: rgba(0, 0, 0, 0.18);
   --material-chrome: rgba(250, 250, 252, 0.76);
   --material-card: rgba(255, 255, 255, 0.82);
+  --material-drawer: rgba(250, 250, 252, 0.9);
 
   --label: #000000;
   --label-secondary: rgba(60, 60, 67, 0.76);
@@ -628,7 +630,19 @@ body.nav-open .nav-scrim {
   line-height: 1.3;
   text-transform: uppercase;
   color: var(--accent);
+  margin-bottom: var(--sp-4);
+}
+
+/* The campaign tag people type when they share the page. */
+.hero-tag {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 590;
+  letter-spacing: 0.06em;
+  color: var(--label-tertiary);
   margin-bottom: var(--sp-6);
+  -webkit-user-select: all;
+  user-select: all;
 }
 
 .hero-subtitle {
@@ -1304,7 +1318,15 @@ body.nav-open .nav-scrim {
   transition: transform 620ms var(--ease-out);
 }
 
-.flip-card:hover .flip-card-inner,
+/* Hover-flip only where a real pointer exists. On touch, tapping triggers
+   :hover and then the click handler, so the card flipped twice and looked
+   stuck. Touch users toggle with the click handler instead. */
+@media (hover: hover) and (pointer: fine) {
+  .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+}
+
 .flip-card:focus-visible .flip-card-inner,
 .flip-card.is-flipped .flip-card-inner {
   transform: rotateY(180deg);
@@ -1595,18 +1617,49 @@ body.nav-open .nav-scrim {
   color: var(--label-secondary);
 }
 
+/* Collapse to zero height.
+   `grid-template-rows` only sizes the FIRST row, and this block holds
+   several children (two paragraphs plus the takeaway), so the extra ones
+   kept their full height and left a gap above the button. `grid-auto-rows`
+   collapses every row that is not explicitly declared. */
 .reading-expandable-content {
   display: grid;
   grid-template-rows: 0fr;
+  grid-auto-rows: 0fr;
   opacity: 0;
-  transition: grid-template-rows 420ms var(--ease-out), opacity 320ms var(--ease-out);
+  transition: grid-template-rows 420ms var(--ease-out),
+              grid-auto-rows 420ms var(--ease-out),
+              opacity 320ms var(--ease-out);
 }
 
-.reading-expandable-content > * { overflow: hidden; }
+/* Grid items carry an automatic minimum size and their own margins, both of
+   which survive a 0fr row and leave a band of empty space above the button.
+   Both are neutralised while collapsed and restored when it opens. */
+.reading-expandable-content > * {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Padding cannot be compressed by a 0fr row either, so it is zeroed too —
+   otherwise the takeaway box alone leaves ~29px of dead space. */
+.reading-article-card:not(.expanded) .reading-expandable-content > * {
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 
 .reading-article-card.expanded .reading-expandable-content {
   grid-template-rows: 1fr;
+  grid-auto-rows: 1fr;
   opacity: 1;
+}
+
+.reading-article-card.expanded .reading-expandable-content > * {
+  margin-top: var(--sp-4);
+}
+
+.reading-article-card.expanded .reading-expandable-content > *:first-child {
+  margin-top: 0;
 }
 
 .reading-expandable-content p {
@@ -1732,6 +1785,16 @@ body.nav-open .nav-scrim {
   background-position: right 0.9rem center;
   background-size: 11px;
   padding-right: 2.2rem;
+}
+
+/* The native dropdown list is painted by the OS, not the page. On a desktop
+   it inherits the white label colour and lands on a white list, so the
+   options vanish. Each option therefore carries its own solid colours. */
+.form-select option {
+  background-color: var(--bg-elevated);
+  color: var(--label);
+  font-family: var(--font-body);
+  font-size: 15px;
 }
 
 .form-select:focus,
@@ -2282,13 +2345,17 @@ body.nav-open .nav-scrim {
     right: 0;
     left: auto;
     width: min(84vw, 320px);
+    /* The desktop bar is a pill (980px). In a tall side drawer that turns
+       the panel into an oval and clips the text, so the radius is reset
+       to a soft curve on the leading edge only. */
+    border-radius: 20px 0 0 20px;
     height: calc(100vh - var(--app-header-h, 56px));
     height: calc(100dvh - var(--app-header-h, 56px));
     flex-direction: column;
     align-items: stretch;
     gap: 2px;
     padding: var(--sp-5) var(--sp-4) calc(var(--sp-5) + env(safe-area-inset-bottom, 0px));
-    background: rgba(28, 28, 30, 0.86);
+    background: var(--material-drawer);
     backdrop-filter: blur(32px) saturate(180%);
     -webkit-backdrop-filter: blur(32px) saturate(180%);
     border-left: 1px solid var(--separator);
@@ -2297,14 +2364,27 @@ body.nav-open .nav-scrim {
     box-shadow: var(--shadow-lg);
     display: flex;
     visibility: hidden;
-    /* Mirrored curves: opening and closing share the same feel */
-    transition: transform 420ms var(--ease-out), visibility 420ms;
-    will-change: transform;
+    /* Closed means invisible and untouchable. These two properties do NOT
+       animate, so even if the transform transition stalls (background tab,
+       busy main thread) the panel can never be left showing or clickable.
+       That was the "menu says open but does not open" bug. */
+    opacity: 0;
+    pointer-events: none;
+    /* Resting off-screen position. */
+    transform: translateX(100%);
+    transition: transform 380ms var(--ease-out),
+                opacity 220ms var(--ease-out),
+                visibility 0s linear 380ms;
+    will-change: transform, opacity;
   }
 
   body.app-mode .nav-list.active {
     visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
     transform: translateX(0);
+    /* Fade in immediately; only the exit is delayed. */
+    transition: transform 380ms var(--ease-out), opacity 220ms var(--ease-out), visibility 0s;
   }
 
   body.app-mode .nav-link {
