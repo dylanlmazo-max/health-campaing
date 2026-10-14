@@ -111,19 +111,100 @@
         <p class="hero-keyline">YOU ARE ENOUGH</p>
 
         <p class="hero-subtitle">
-          We often compare our ordinary behind-the-scenes moments with everyone else’s polished highlights. Social media displays what people choose to share, not what they quietly carry. Understanding this distinction is the first step towards reclaiming your peace of mind.
+          Social media shows what people choose to share, not what they quietly carry.
         </p>
-
-        <div class="hero-quote-card">
-          <p>"A quiet reminder: You are never falling behind simply because your daily life does not look like someone else’s highlight reel."</p>
-        </div>
-
-        <div class="hero-social-proof">
-          <span class="pulse-dot"></span>
-          <p>Over <strong>4,200 young people</strong> have paused to reflect on their relationship with the feed this week.</p>
-        </div>
       </div>
     </section>
+
+      <!-- ===============================================================
+           HUB INDEX — every destination, visible without opening the menu
+           ---------------------------------------------------------------
+           The 3-bar drawer stays as the compact index, but nothing is
+           hidden behind it any more: the whole map of the app sits on the
+           landing screen, grouped exactly like the drawer so the two read
+           as one structure rather than two competing menus.
+           =============================================================== -->
+      <nav class="hub-index" id="hubIndex" aria-label="Explore NORUSH">
+        <p class="hub-index-title">Explore</p>
+
+        <p class="hub-index-group">Experience</p>
+        <a href="#simulator" class="hub-link g-exp">
+          <span class="hub-link-icon"><i class="fa-brands fa-tiktok"></i></span>
+          <span class="hub-link-text">
+            <strong>Simulator</strong>
+            <span>See the feed from someone else&rsquo;s side</span>
+          </span>
+          <i class="fa-solid fa-chevron-right hub-link-arrow"></i>
+        </a>
+        <a href="#myths" class="hub-link g-exp">
+          <span class="hub-link-icon"><i class="fa-solid fa-rotate"></i></span>
+          <span class="hub-link-text">
+            <strong>Myths 3D</strong>
+            <span>Flip the stories you were told</span>
+          </span>
+          <i class="fa-solid fa-chevron-right hub-link-arrow"></i>
+        </a>
+        <a href="#profiles" class="hub-link g-exp">
+          <span class="hub-link-icon"><i class="fa-solid fa-mask"></i></span>
+          <span class="hub-link-text">
+            <strong>Profiles</strong>
+            <span>Behind three different lives</span>
+          </span>
+          <i class="fa-solid fa-chevron-right hub-link-arrow"></i>
+        </a>
+
+        <p class="hub-index-group">Understand</p>
+        <a href="#evidence" class="hub-link g-und">
+          <span class="hub-link-icon"><i class="fa-solid fa-chart-simple"></i></span>
+          <span class="hub-link-text">
+            <strong>Evidence</strong>
+            <span>What the research actually says</span>
+          </span>
+          <i class="fa-solid fa-chevron-right hub-link-arrow"></i>
+        </a>
+        <a href="#psychology" class="hub-link g-und">
+          <span class="hub-link-icon"><i class="fa-solid fa-brain"></i></span>
+          <span class="hub-link-text">
+            <strong>Psychology</strong>
+            <span>Why comparison feels so strong</span>
+          </span>
+          <i class="fa-solid fa-chevron-right hub-link-arrow"></i>
+        </a>
+
+        <p class="hub-index-group">Resources</p>
+        <a href="#reading-lounge" class="hub-link g-res">
+          <span class="hub-link-icon"><i class="fa-solid fa-book-open"></i></span>
+          <span class="hub-link-text">
+            <strong>Reading Lounge</strong>
+            <span>Longer reads, at your own pace</span>
+          </span>
+          <i class="fa-solid fa-chevron-right hub-link-arrow"></i>
+        </a>
+        <a href="#survey" class="hub-link g-res">
+          <span class="hub-link-icon"><i class="fa-solid fa-clipboard-check"></i></span>
+          <span class="hub-link-text">
+            <strong>Survey</strong>
+            <span>Share your experience, anonymously</span>
+          </span>
+          <i class="fa-solid fa-chevron-right hub-link-arrow"></i>
+        </a>
+        <a href="#about-us" class="hub-link g-res">
+          <span class="hub-link-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+          <span class="hub-link-text">
+            <strong>UNNE Cohort</strong>
+            <span>Who we are</span>
+          </span>
+          <i class="fa-solid fa-chevron-right hub-link-arrow"></i>
+        </a>
+        <a href="#support" class="hub-link g-res">
+          <span class="hub-link-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+          <span class="hub-link-text">
+            <strong>Support</strong>
+            <span>Free help, whenever you need it</span>
+          </span>
+          <i class="fa-solid fa-chevron-right hub-link-arrow"></i>
+        </a>
+      </nav>
 
       <!-- Minimal support note: real navigation lives in the top menu -->
       <div class="hub-support-line">
@@ -931,10 +1012,134 @@
               </div>
             </div>
 
-            <!-- Question 4: Reflection (Optional) -->
+            <div class="form-divider"><span>Habits &amp; feelings</span></div>
+
+            <!-- Question 4: Overthinking Before Posting -->
+            <div class="form-group">
+              <label for="surveyOverthinking" class="form-label">
+                <span class="q-num">4</span> Before you post something, how much do you usually overthink it?
+              </label>
+              <select id="surveyOverthinking" name="posting_overthinking" class="form-select" required>
+                <option value="" disabled selected>Select an answer</option>
+                <option value="Not at all">Not at all</option>
+                <option value="A little">A little</option>
+                <option value="A fair amount">A fair amount</option>
+                <option value="A lot">A lot</option>
+                <option value="A huge amount">A huge amount</option>
+              </select>
+            </div>
+
+            <!-- Question 5: Peak Time of Day -->
+            <div class="form-group">
+              <label for="surveyPeakTime" class="form-label">
+                <span class="q-num">5</span> What time of day do you use social media the most?
+              </label>
+              <select id="surveyPeakTime" name="peak_time" class="form-select" required>
+                <option value="" disabled selected>Select an answer</option>
+                <option value="Early morning (5am - 9am)">Early morning (5am - 9am)</option>
+                <option value="Midday (9am - 2pm)">Midday (9am - 2pm)</option>
+                <option value="Afternoon (2pm - 6pm)">Afternoon (2pm - 6pm)</option>
+                <option value="Evening (6pm - 11pm)">Evening (6pm - 11pm)</option>
+                <option value="Late night (11pm - 5am)">Late night (11pm - 5am)</option>
+              </select>
+            </div>
+
+            <!-- Question 6: Need to Post Every Moment -->
+            <div class="form-group">
+              <label for="surveyPostEveryMoment" class="form-label">
+                <span class="q-num">6</span> Do you feel the need to post every moment of your day?
+              </label>
+              <select id="surveyPostEveryMoment" name="post_every_moment" class="form-select" required>
+                <option value="" disabled selected>Select an answer</option>
+                <option value="Never">Never</option>
+                <option value="Rarely">Rarely</option>
+                <option value="Sometimes">Sometimes</option>
+                <option value="Often">Often</option>
+                <option value="Always">Always</option>
+              </select>
+            </div>
+
+            <!-- Question 7: Emotion After Scrolling -->
+            <div class="form-group">
+              <label for="surveyEmotion" class="form-label">
+                <span class="q-num">7</span> After scrolling for a long time (TikTok, Instagram...), which emotion do you feel most often?
+              </label>
+              <select id="surveyEmotion" name="emotion_after_scrolling" class="form-select" required>
+                <option value="" disabled selected>Select an answer</option>
+                <option value="Calm">Calm</option>
+                <option value="Neutral">Neutral</option>
+                <option value="Motivated">Motivated</option>
+                <option value="Tired">Tired</option>
+                <option value="Anxious or stressed">Anxious or stressed</option>
+                <option value="Envious or jealous">Envious or jealous</option>
+                <option value="Sad or disappointed">Sad or disappointed</option>
+                <option value="Irritated or angry">Irritated or angry</option>
+              </select>
+            </div>
+
+            <!-- Question 8: Pressure to Show a Perfect Life -->
+            <div class="form-group">
+              <label for="surveyPerfectLife" class="form-label">
+                <span class="q-num">8</span> Do you feel pressure to show a perfect, happy or successful life on your profiles?
+              </label>
+              <select id="surveyPerfectLife" name="perfect_life_pressure" class="form-select" required>
+                <option value="" disabled selected>Select an answer</option>
+                <option value="Not at all">Not at all</option>
+                <option value="Slightly">Slightly</option>
+                <option value="Moderately">Moderately</option>
+                <option value="Significantly">Significantly</option>
+                <option value="A great deal">A great deal</option>
+              </select>
+            </div>
+
+            <!-- Question 9: Filters and Retouching -->
+            <div class="form-group">
+              <label for="surveyFilters" class="form-label">
+                <span class="q-num">9</span> Do you use filters to change your facial features, or retouch your body, before posting a photo or video?
+              </label>
+              <select id="surveyFilters" name="photo_filters" class="form-select" required>
+                <option value="" disabled selected>Select an answer</option>
+                <option value="Never">Never</option>
+                <option value="Rarely">Rarely</option>
+                <option value="Sometimes">Sometimes</option>
+                <option value="Often">Often</option>
+                <option value="Almost every time">Almost every time</option>
+              </select>
+            </div>
+
+            <!-- Question 10: Digital Detox -->
+            <div class="form-group">
+              <label for="surveyDetox" class="form-label">
+                <span class="q-num">10</span> Have you ever tried a digital detox (leaving social media for a few days or weeks)?
+              </label>
+              <select id="surveyDetox" name="digital_detox" class="form-select" required>
+                <option value="" disabled selected>Select an answer</option>
+                <option value="Yes, more than once">Yes, more than once</option>
+                <option value="Yes, once">Yes, once</option>
+                <option value="I tried but could not keep it up">I tried but could not keep it up</option>
+                <option value="No, never">No, never</option>
+              </select>
+            </div>
+
+            <!-- Question 11: Effect on Sleep and Stress -->
+            <div class="form-group">
+              <label for="surveyWellbeing" class="form-label">
+                <span class="q-num">11</span> Do you feel that what you watch affects your sleep or your daily stress level?
+              </label>
+              <select id="surveyWellbeing" name="wellbeing_effect" class="form-select" required>
+                <option value="" disabled selected>Select an answer</option>
+                <option value="Not at all">Not at all</option>
+                <option value="Slightly">Slightly</option>
+                <option value="Moderately">Moderately</option>
+                <option value="Significantly">Significantly</option>
+                <option value="A great deal">A great deal</option>
+              </select>
+            </div>
+
+            <!-- Question 12: Reflection (Optional) -->
             <div class="form-group">
               <label for="surveyReflection" class="form-label">
-                <span class="q-num">4</span> What healthy digital habit would you like to cultivate for your peace of mind? (Optional)
+                <span class="q-num">12</span> What healthy digital habit would you like to cultivate for your peace of mind? (Optional)
               </label>
               <textarea 
                 id="surveyReflection" 
@@ -1176,6 +1381,17 @@
               </div>
             </div>
           </div>
+
+          <!-- Named authors. The section credits "a collective of 4th-year
+               English students", so the people in it should be on the page. -->
+          <div class="creators-authors">
+            <p class="creators-authors-label">Created by</p>
+            <ul class="creators-authors-list">
+              <li>Mazo, Dylan</li>
+              <li>Flores, Pia</li>
+              <li>Mandagarán, Santiago</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -1219,7 +1435,10 @@
 
     <div class="footer-bottom">
       <div class="container footer-bottom-container">
-        <p>© 2026 "#NORUSH — You Are Enough" Campaign. Developed with dedication by 4th-Year English Students, UNNE (Languages Department).</p>
+        <div class="footer-legal">
+          <p>© 2026 "#NORUSH — You Are Enough" Campaign. Developed with dedication by 4th-Year English Students, UNNE (Languages Department).</p>
+          <p class="footer-authors">Mazo, Dylan &nbsp;·&nbsp; Flores, Pia &nbsp;·&nbsp; Mandagarán, Santiago</p>
+        </div>
         <div class="footer-social-icons">
           <span><i class="fa-solid fa-hashtag"></i> Share it as <strong>#NORUSH</strong></span>
         </div>

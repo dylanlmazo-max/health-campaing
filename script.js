@@ -176,7 +176,8 @@ function initPressFeedback() {
   const PRESSABLE = [
     ".btn", ".nav-link", ".action-btn", ".profile-switch-btn",
     ".btn-read-more", ".rating-box", ".hotline-link",
-    ".verified-link-card", ".flip-card", ".hub-support-line a"
+    ".verified-link-card", ".flip-card", ".hub-support-line a",
+    ".hub-link"
   ].join(",");
 
   document.querySelectorAll(PRESSABLE).forEach(el => {
@@ -591,6 +592,14 @@ function initSurvey() {
     });
   }
 
+  // Clear the "unanswered" marker as soon as the person answers that
+  // question, so the form stops pointing at something already dealt with.
+  form.addEventListener("change", (e) => {
+    const el = e.target;
+    if (!el.name || !String(el.value ?? "").trim()) return;
+    el.closest(".form-group.is-missing")?.classList.remove("is-missing");
+  });
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -599,13 +608,30 @@ function initSurvey() {
     const impactLevel = form.impact_level?.value;
     const reflection = document.getElementById("surveyReflection")?.value.trim() || "";
 
-    if (!age) {
-      showFormFeedback("Please select your age group.", "error");
-      return;
-    }
+    // Every control marked `required` in the markup must be answered.
+    // The attribute is the single source of truth, so adding a question
+    // to the form needs no change here.
+    const missing = [...form.querySelectorAll("[required]")].filter((el) => {
+      const isGroup = el.type === "radio" || el.type === "checkbox";
+      const value = isGroup ? form.elements[el.name]?.value : el.value;
+      return !String(value ?? "").trim();
+    });
 
-    if (!impactLevel) {
-      showFormFeedback("Please indicate how much comparison affects your well-being.", "error");
+    form
+      .querySelectorAll(".form-group.is-missing")
+      .forEach((g) => g.classList.remove("is-missing"));
+
+    if (missing.length) {
+      missing.forEach((el) => el.closest(".form-group")?.classList.add("is-missing"));
+      showFormFeedback(
+        missing.length === 1
+          ? "One question is still unanswered."
+          : `${missing.length} questions are still unanswered.`,
+        "error"
+      );
+      missing[0]
+        .closest(".form-group")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
 
@@ -615,6 +641,16 @@ function initSurvey() {
       age_range: age,
       daily_hours: hours,
       impact_score: parseInt(impactLevel, 10),
+      // Stored as the wording shown to the participant, so the answers are
+      // readable in the Firestore console without a lookup table.
+      posting_overthinking: form.posting_overthinking.value,
+      peak_time: form.peak_time.value,
+      post_every_moment: form.post_every_moment.value,
+      emotion_after_scrolling: form.emotion_after_scrolling.value,
+      perfect_life_pressure: form.perfect_life_pressure.value,
+      photo_filters: form.photo_filters.value,
+      digital_detox: form.digital_detox.value,
+      wellbeing_effect: form.wellbeing_effect.value,
       reflection: reflection || "No comment provided",
       created_at: new Date().toISOString()
     };
@@ -751,6 +787,14 @@ function initSurvey() {
         age_range: data.age_range,
         daily_hours: data.daily_hours,
         impact_score: data.impact_score,
+        posting_overthinking: data.posting_overthinking,
+        peak_time: data.peak_time,
+        post_every_moment: data.post_every_moment,
+        emotion_after_scrolling: data.emotion_after_scrolling,
+        perfect_life_pressure: data.perfect_life_pressure,
+        photo_filters: data.photo_filters,
+        digital_detox: data.digital_detox,
+        wellbeing_effect: data.wellbeing_effect,
         reflection: data.reflection,
         created_at: data.created_at,
         server_timestamp: serverTimestamp()
@@ -934,7 +978,9 @@ function showAppView(viewKey, options = {}) {
   const hub = document.getElementById("hub");
   const titleEl = document.getElementById("appViewTitle");
   const footer = document.querySelector(".app-shell > footer");
-  const navLinks = document.querySelectorAll(".nav-list .nav-link");
+  // Both the drawer and the hub index point at the same views, so both
+  // have to show which one you are standing in.
+  const navLinks = document.querySelectorAll(".nav-list .nav-link, .hub-link");
 
   if (!shell || !hub) return;
 

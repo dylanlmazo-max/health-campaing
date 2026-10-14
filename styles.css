@@ -653,44 +653,6 @@ body.nav-open .nav-scrim {
   margin-bottom: var(--sp-7);
 }
 
-.hero-quote-card {
-  max-width: 60ch;
-  padding: var(--sp-5) var(--sp-6);
-  border-radius: var(--r-lg);
-  background: var(--material-ultra-thin);
-  margin-bottom: var(--sp-6);
-  color: var(--label-secondary);
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-.hero-quote-card p { font-style: italic; }
-
-.hero-social-proof {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-size: 14px;
-  color: var(--label-tertiary);
-}
-
-.hero-social-proof strong { color: var(--label-secondary); font-weight: 590; }
-
-/* A slow, calm breath — no pulsing halo */
-.pulse-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--sys-green);
-  flex-shrink: 0;
-  animation: breathe 3.2s var(--ease-in-out) infinite;
-}
-
-@keyframes breathe {
-  0%, 100% { opacity: 0.45; transform: scale(0.9); }
-  50%      { opacity: 1;    transform: scale(1.1); }
-}
-
 /* --- The hub's only supporting element --- */
 .hub-support-line {
   display: flex;
@@ -716,6 +678,102 @@ body.nav-open .nav-scrim {
 }
 
 .hub-support-line a:hover { color: var(--sys-green); border-color: var(--sys-green); }
+
+/* ---------- HUB INDEX ----------
+   The whole map of the app, sitting on the landing screen. Hidden on
+   desktop, where the page already scrolls continuously past every
+   section and an index would just be a second copy of the nav bar. */
+.hub-index { display: none; }
+
+body.app-mode .hub-index {
+  display: block;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: var(--sp-2) var(--sp-5) 0;
+}
+
+body.app-mode .hub-index-title {
+  font-size: 20px;
+  font-weight: 640;
+  letter-spacing: -0.022em;
+  color: var(--label);
+  margin-bottom: var(--sp-2);
+}
+
+/* Same shape as the drawer's group headings, so the index and the
+   menu read as one structure instead of two competing lists. */
+body.app-mode .hub-index-group {
+  font-size: 11px;
+  font-weight: 590;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--label-tertiary);
+  padding: var(--sp-5) 0 0.3rem;
+}
+
+body.app-mode .hub-link {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-height: 56px;
+  padding: 0.55rem 0.15rem;
+  text-decoration: none;
+  color: var(--label);
+  border-bottom: 1px solid var(--separator-opaque);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.app-mode .hub-link:last-child { border-bottom: none; }
+
+body.app-mode .hub-link-icon {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--hub-hue, var(--accent));
+  background: color-mix(in srgb, var(--hub-hue, var(--accent)) 16%, transparent);
+}
+
+body.app-mode .hub-link-text {
+  flex: 1;
+  min-width: 0;                    /* lets the title ellipsise, not overflow */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+body.app-mode .hub-link-text strong {
+  font-size: 15.5px;
+  font-weight: 590;
+  letter-spacing: -0.012em;
+  color: var(--label);
+}
+
+body.app-mode .hub-link-text > span {
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--label-tertiary);
+}
+
+body.app-mode .hub-link-arrow {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--label-tertiary);
+  opacity: 0.55;
+}
+
+/* The row you are currently inside, mirroring the drawer's active state. */
+body.app-mode .hub-link.active .hub-link-text strong { color: var(--hub-hue, var(--accent)); }
+
+/* One hue per group: the list is scannable by colour without three
+   full-strength accents competing for attention. */
+body.app-mode .g-exp { --hub-hue: var(--accent); }
+body.app-mode .g-und { --hub-hue: var(--sys-purple); }
+body.app-mode .g-res { --hub-hue: var(--sys-green); }
 .hub-support-sep { color: var(--label-tertiary); padding: 0 0.2rem; }
 
 /* ===============================================================
@@ -1739,6 +1797,36 @@ body.nav-open .nav-scrim {
 .survey-form { display: flex; flex-direction: column; gap: var(--sp-6); }
 .form-group { display: flex; flex-direction: column; gap: 0.6rem; }
 
+/* The form grew from four questions to twelve. The divider keeps the
+   original three visually apart from the habit questions added later,
+   so the page still reads as two short blocks instead of one long wall. */
+.form-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: var(--sp-3);
+  color: var(--label-tertiary);
+  font-size: 11.5px;
+  font-weight: 590;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.form-divider::before,
+.form-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--separator);
+}
+
+/* Shown when the form is sent with a question still unanswered. */
+.form-group.is-missing .form-select { border-color: var(--sys-red); }
+.form-group.is-missing .q-num {
+  background: rgba(255, 59, 48, 0.14);
+  color: var(--sys-red);
+}
+
 .form-label {
   display: flex;
   align-items: flex-start;
@@ -2179,6 +2267,44 @@ body.nav-open .nav-scrim {
 
 .uni-pill i { font-size: 10px; color: var(--label-tertiary); }
 
+/* ---------- AUTHORS ----------
+   The section credits "a collective", so the three people are named at
+   the foot of it. Pills rather than a list, to match the university
+   badges above without competing with them. */
+.creators-authors {
+  margin-top: var(--sp-7);
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--separator);
+}
+
+.creators-authors-label {
+  font-size: 11px;
+  font-weight: 590;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--label-tertiary);
+  margin-bottom: var(--sp-4);
+}
+
+.creators-authors-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.creators-authors-list li {
+  font-size: 15px;
+  font-weight: 590;
+  letter-spacing: -0.012em;
+  color: var(--label);
+  background: var(--material-thin);
+  border-radius: var(--r-pill);
+  padding: 0.5rem 1.05rem;
+}
+
 /* ===============================================================
    FOOTER
    =============================================================== */
@@ -2259,6 +2385,16 @@ body.nav-open .nav-scrim {
 
 .footer-social-icons span { display: inline-flex; align-items: center; gap: 0.4rem; }
 .footer-social-icons i { color: var(--sys-red); font-size: 0.7rem; }
+
+/* The credit line reads brighter than the legal notice above it, but stays
+   quiet: names belong at the bottom, not competing with the work itself. */
+.footer-legal p + p { margin-top: 0.3rem; }
+
+.footer-bottom-container .footer-authors {
+  color: var(--label);
+  font-weight: 590;
+  letter-spacing: -0.006em;
+}
 
 /* ===============================================================
    TOAST
@@ -2453,25 +2589,21 @@ body.nav-open .nav-scrim {
 
   body.app-mode .app-hub .hero-subtitle {
     font-size: 16px;
-    margin-bottom: var(--sp-6);
+    /* The hero used to be the whole screen, so it carried its own bottom
+       margin. Now the index follows immediately, and the section's own
+       padding is enough — the extra 32px was dead air above the list. */
+    margin-bottom: 0;
     margin-left: auto;
     margin-right: auto;
   }
 
-  body.app-mode .app-hub .hero-quote-card {
-    margin-bottom: var(--sp-5);
-    margin-left: auto;
-    margin-right: auto;
-    padding: var(--sp-4) var(--sp-5);
-    font-size: 15px;
+  /* Sits directly under the index, so it needs its own air — otherwise the
+     crisis line reads as a sub-row of Support rather than a page footer. */
+  body.app-mode .hub-support-line {
+    padding-top: var(--sp-7);
+    padding-bottom: var(--sp-7);
+    font-size: 13px;
   }
-
-  body.app-mode .app-hub .hero-social-proof {
-    font-size: 13.5px;
-    justify-content: center;
-  }
-
-  body.app-mode .hub-support-line { padding-bottom: var(--sp-7); font-size: 13px; }
 
   /* Generous tap targets */
   body.app-mode .btn { min-height: 44px; }
@@ -2576,7 +2708,8 @@ body.nav-open .nav-scrim {
 .profile-switch-btn,
 .hotline-link,
 .verified-link-card,
-.hub-support-line a {
+.hub-support-line a,
+.hub-link {
   --press: 0;
 }
 
@@ -2592,7 +2725,8 @@ body.nav-open .nav-scrim {
   background-color: color-mix(in srgb, var(--material-thin) calc(var(--press, 0) * 100%), transparent);
 }
 
-.hub-support-line a {
+.hub-support-line a,
+.hub-link {
   opacity: calc(1 - 0.35 * var(--press, 0));
 }
 
@@ -2602,6 +2736,8 @@ body.nav-open .nav-scrim {
 .action-btn:active,
 .profile-switch-btn:active,
 .verified-link-card:active { transform: scale(0.96); }
+
+.hub-link:active { opacity: 0.6; }
 
 @media (prefers-reduced-transparency: reduce) {
   .nav-link,
@@ -2638,7 +2774,6 @@ body.nav-open .nav-scrim {
   .flip-card.is-flipped .flip-card-front { opacity: 1; }
 
   .reading-expandable-content { transition: opacity 120ms ease; }
-  .pulse-dot,
   .pulse-ring,
   .rotating,
   .music-ticker { animation: none; }

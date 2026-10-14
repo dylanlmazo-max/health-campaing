@@ -76,16 +76,18 @@ navigation scrolls you through every section.
 ### 📲 Phone & Tablet (1023px and below)
 A focused, **minimalist** experience that removes the endless scroll:
 
-- **Hub screen (initial view):** a calm cover — hero, the campaign badges and a
-  single discreet line with the free 24/7 helplines (102 / 135).
-- **One section at a time:** picking a destination from the menu opens that
-  section inside a fixed app shell. The others are hidden, so there is no
-  endless scrolling and no duplicated navigation.
-- **Single navigation:** the only menu is the **three-bar button** in the app
-  bar. It opens a grouped drawer:
-  - *Experience* — Simulator, Myths 3D, Profiles
-  - *Understand* — Evidence, Psychology
-  - *Resources* — Reading Lounge, Survey, UNNE Cohort, Support
+- **Hub screen (initial view):** a calm cover — hero, the campaign badges, the
+  **full index of every section** and a single discreet line with the free 24/7
+  helplines (102 / 135).
+- **Nothing is hidden behind the menu:** the hub lists all nine destinations,
+  grouped exactly like the drawer (*Experience* / *Understand* / *Resources*),
+  each with a one-line description. Five of them are already on screen before
+  any scrolling. Both lists mark the section you are standing in.
+- **One section at a time:** picking a destination opens that section inside a
+  fixed app shell. The others are hidden, so there is no endless scrolling.
+- **The drawer is the compact index:** the **three-bar button** in the app bar
+  still opens the full grouped list, which matters once you are inside a
+  section and want to jump somewhere else without going back.
 - **App bar:** shows the current section title and a **back button** to the hub.
 - **URL aware:** opening `index.html#survey` (or any section) lands directly on
   that section, and the browser / Android back button returns to the hub.
@@ -115,7 +117,7 @@ The interface follows Apple's design principles, translated to the web.
 | Principle | How it is applied |
 | --- | --- |
 | **Purpose** | One accent colour (`#3d9bff`) instead of a six-colour neon palette. The ambient glow blobs were removed entirely. |
-| **Simplicity** | The hub is a calm cover. Navigation exists in exactly one place (the three-bar menu), never duplicated. |
+| **Simplicity** | The hub is a calm cover followed by a plain, grouped list. Nothing is hidden behind the menu, and the drawer never contradicts the list — they are the same structure. |
 | **Craft** | Hairline separators, continuous (pill) corner radii, one spacing scale, no arbitrary values. |
 | **Restraint** | Emphasis comes from weight, size and leading — never from gradient text or glows. |
 
